@@ -1,0 +1,76 @@
+{
+  "name": "karma-config",
+  "version": "0.0.1",
+  "description": "Karma configuration builder with sensible defaults to minimize boilerplate",
+  "keywords": [
+    "karma",
+    "config",
+    "configuration",
+    "defaults"
+  ],
+  "author": {
+    "name": "James Messinger",
+    "url": "https://jamesmessinger.com"
+  },
+  "license": "(MIT OR CC-BY-NC-SA-4.0)",
+  "homepage": "https://jsdevtools.org/karma-config",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JS-DevTools/karma-config.git"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "clean": "shx rm -rf .nyc_output coverage lib",
+    "lint": "npm run lint:typescript && npm run lint:javascript",
+    "lint:typescript": "tslint -p tsconfig.json",
+    "lint:javascript": "eslint test ./*.js",
+    "build": "npm run clean && tsc",
+    "test": "mocha && npm run lint",
+    "coverage": "nyc --reporter=text --reporter=lcov mocha",
+    "upgrade": "npm-check -u",
+    "bump": "bump --prompt --tag --push --all",
+    "release": "npm run upgrade && npm run build && npm test && npm run bump"
+  },
+  "dependencies": {
+    "istanbul-instrumenter-loader": "^3.0.1",
+    "karma": "^4.0.0",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-cli": "^2.0.0",
+    "karma-coverage-istanbul-reporter": "^2.0.4",
+    "karma-edge-launcher": "^0.4.2",
+    "karma-firefox-launcher": "^1.1.0",
+    "karma-host-environment": "^1.1.6",
+    "karma-ie-launcher": "^1.0.0",
+    "karma-mocha": "^1.2.0",
+    "karma-safari-launcher": "^1.0.0",
+    "karma-sauce-launcher": "^2.0.2",
+    "karma-verbose-reporter": "0.0.6",
+    "karma-webpack": "^3.0.5",
+    "ts-loader": "^5.3.3",
+    "webpack": "^4.29.0"
+  },
+  "devDependencies": {
+    "@types/karma": "^3.0.1",
+    "@types/karma-webpack": "^2.0.5",
+    "@types/node": "^10.12.18",
+    "@types/webpack": "^4.4.24",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.2",
+    "eslint": "^5.6.1",
+    "eslint-config-modular": "^6.0.0",
+    "mocha": "^5.2.0",
+    "npm-check": "^5.9.0",
+    "nyc": "^13.1.0",
+    "shx": "^0.3.2",
+    "tslint": "^5.12.0",
+    "tslint-modular": "^1.1.7",
+    "typescript": "^3.2.2",
+    "typescript-tslint-plugin": "^0.3.0",
+    "version-bump-prompt": "^4.2.1"
+  }
+}
