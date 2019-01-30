@@ -1,0 +1,27 @@
+# Travis CI config
+# http://docs.travis-ci.com/user/languages/javascript-with-nodejs/
+# https://docs.travis-ci.com/user/customizing-the-build/
+# https://docs.travis-ci.com/user/migrating-from-legacy/
+
+filter_secrets: false
+language: node_js
+
+node_js:
+  - 10
+  - 8
+  - 6
+
+os:
+  - linux
+  - osx
+  - windows
+
+before_script:
+  - npm run lint
+  - npm run build
+
+script:
+  - npm run coverage
+
+after_success:
+  - cat ./coverage/lcov.info | coveralls
