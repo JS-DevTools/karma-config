@@ -1,0 +1,11 @@
+# ESLint config
+# http://eslint.org/docs/user-guide/configuring
+# https://github.com/JS-DevTools/eslint-config-modular
+
+extends:
+  - modular/test
+
+globals:
+  # karma-host-environment
+  # https://www.npmjs.com/package/karma-host-environment
+  host: false
