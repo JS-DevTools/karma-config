@@ -2,7 +2,7 @@
 
 const karmaConfig = require("../../");
 const { expect } = require("chai");
-const defaultConfig = require("../fixtures/default-config");
+const { defaultConfig, mergeConfig } = require("../fixtures/config");
 const envVars = require("../fixtures/env-vars");
 
 describe("karmaConfig()", () => {
@@ -11,10 +11,9 @@ describe("karmaConfig()", () => {
 
   function testConfigureKarma (fn, expected) {
     let actual;
-
     expect(fn).to.be.a("function").with.property("name", "configureKarma");
     fn({ set (config) { actual = config; } });
-    expect(actual).to.deep.equal(Object.assign({}, defaultConfig, expected));
+    expect(actual).to.deep.equal(mergeConfig(expected));
   }
 
   it("should work without any arguments", () => {

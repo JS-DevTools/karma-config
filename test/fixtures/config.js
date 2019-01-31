@@ -1,5 +1,9 @@
 "use strict";
 
+/**
+ * @typedef {import("karma").ConfigOptions} ConfigOptions
+ */
+
 let browsers = ["Firefox", "Chrome"];
 
 switch (process.platform) {
@@ -11,7 +15,7 @@ switch (process.platform) {
     break;
 }
 
-module.exports = {
+const defaultConfig = {
   browsers,
   frameworks: ["mocha", "chai", "host-environment"],
   files: [
@@ -30,3 +34,15 @@ module.exports = {
     }
   }
 };
+
+/**
+ * Merges the given config with the default config;
+ *
+ * @param {ConfigOptions} config
+ * @returns {ConfigOptions}
+ */
+function mergeConfig (config) {
+  return Object.assign({}, defaultConfig, config);
+}
+
+module.exports = { defaultConfig, mergeConfig };
