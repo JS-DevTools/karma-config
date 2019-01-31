@@ -74,5 +74,8 @@
     "typescript": "^3.2.2",
     "typescript-tslint-plugin": "^0.3.0",
     "version-bump-prompt": "^4.2.1"
+  },
+  "peerDependencies": {
+    "karma": ">=4"
   }
 }
