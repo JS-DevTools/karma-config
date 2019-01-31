@@ -20,8 +20,13 @@ export { buildConfig };
 export default function karmaConfig(options: Options): KarmaConfig {
   let config = buildConfig(options);
 
-  console.log("Karma Config:\n", JSON.stringify(config, undefined, 2));
-  return (karma) => karma.set(config);
+  return function configureKarma(karma) {
+    if (config.logLevel !== karma.LOG_DISABLE) {
+      console.debug("Karma Config:\n", JSON.stringify(config, undefined, 2));
+    }
+
+    karma.set(config);
+  };
 }
 
 // CommonJS default export hack

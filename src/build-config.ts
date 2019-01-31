@@ -1,4 +1,5 @@
 import { ConfigOptions, FilePattern } from "karma";
+import { RuleSetRule, RuleSetUseItem } from "webpack";
 import { configureBrowsers } from "./configure-browsers";
 import { NormalizedOptions, normalizeOptions, Options } from "./options";
 import { mergeConfig } from "./util";
@@ -15,11 +16,10 @@ export function buildConfig(options: Options): ConfigOptions {
     files: opts.testFiles.concat(opts.serveFiles.map(serveFile)),
   });
 
-  configureWebpack(config, opts);
-  configureBrowsers(config, opts);
-
-  opts.typescript && configureTypescript(config, opts);
-  opts.coverage && configureCoverage(config, opts);
+  config = configureWebpack(config, opts);
+  config = configureBrowsers(config, opts);
+  config = configureTypescript(config, opts);
+  config = configureCoverage(config, opts);
 
   return config;
 }
@@ -27,7 +27,7 @@ export function buildConfig(options: Options): ConfigOptions {
 /**
  * Configures Webpack to bundle test files and their dependencies.
  */
-function configureWebpack(config: ConfigOptions, { testDir }: NormalizedOptions): void {
+function configureWebpack(config: ConfigOptions, { testDir }: NormalizedOptions): ConfigOptions {
   config.preprocessors = mergeConfig(config.preprocessors, {
     [`${testDir}/**/*.+(spec|test).+(js|jsx)`]: ["webpack"],
   });
@@ -40,13 +40,19 @@ function configureWebpack(config: ConfigOptions, { testDir }: NormalizedOptions)
   config.webpack.module = mergeConfig(config.webpack.module, {
     rules: [],
   });
+
+  return config;
 }
 
 /**
  * Configures Karma and Webpack to support TypeScript files.
  */
-function configureTypescript(config: ConfigOptions, options: NormalizedOptions): void {
+function configureTypescript(config: ConfigOptions, { typescript }: NormalizedOptions): ConfigOptions {
   const tsExtensions = ["ts", "tsx"];
+
+  if (!typescript) {
+    return config;
+  }
 
   config.mime = mergeConfig(config.mime, {
     "text/x-typescript": tsExtensions,
@@ -66,12 +72,20 @@ function configureTypescript(config: ConfigOptions, options: NormalizedOptions):
     // Insert the ts-loader at the beginning of the rules list
     config.webpack.module!.rules.unshift({ test: /\.tsx?$/, use: "ts-loader" });
   }
+
+  return config;
 }
 
 /**
  * Configures Karma and Webpack to gather code-coverage data.
  */
-function configureCoverage(config: ConfigOptions, options: NormalizedOptions): void {
+function configureCoverage(config: ConfigOptions, options: NormalizedOptions): ConfigOptions {
+  let { coverage, typescript, sourceDir } = options;
+
+  if (!coverage) {
+    return config;
+  }
+
   if (!config.reporters!.includes("coverage-istanbul")) {
     config.reporters!.push("coverage-istanbul");
   }
@@ -83,8 +97,8 @@ function configureCoverage(config: ConfigOptions, options: NormalizedOptions): v
 
   if (!hasWebpackLoader(config.webpack.module!.rules, "istanbul-instrumenter-loader")) {
     config.webpack.module!.rules.push({
-      test: options.typescript ? /\.tsx?$/ : /\.jsx?$/,
-      include: new RegExp(options.sourceDir.replace(/\//g, "\/")),
+      test: typescript ? /\.tsx?$/ : /\.jsx?$/,
+      include: new RegExp(sourceDir.replace(/\//g, "\/")),
       exclude: /node_modules|\.spec\.|\.test\./,
       enforce: "post",
       use: {
@@ -95,6 +109,8 @@ function configureCoverage(config: ConfigOptions, options: NormalizedOptions): v
       }
     });
   }
+
+  return config;
 }
 
 /**
@@ -110,19 +126,36 @@ function serveFile(file: string | FilePattern): FilePattern {
   }
 }
 
-function hasWebpackLoader(rules, name) {
+/**
+ * Determines whether the specified Webpack loader already exists in the rules list.
+ */
+function hasWebpackLoader(rules: RuleSetRule[], name: string): boolean {
   for (let rule of rules) {
     if (rule && rule.use) {
-      if (rule.use === name || rule.use.loader === name) {
-        return true;
-      }
-
       if (Array.isArray(rule.use)) {
-        let found = hasWebpackLoader(rule.use, name);
-        if (found) {
-          return true;
+        for (let loader of rule.use) {
+          if (webpackLoaderName(loader) === name) {
+            return true;
+          }
         }
       }
+      else {
+        return webpackLoaderName(rule.use as RuleSetUseItem) === name;
+      }
     }
+  }
+
+  return false;
+}
+
+/**
+ * Returns the name of the given Webpack loader, if possible.
+ */
+function webpackLoaderName(loader: RuleSetUseItem): string | undefined {
+  if (typeof loader === "string") {
+    return loader;
+  }
+  else if (typeof loader === "object") {
+    return loader.loader;
   }
 }

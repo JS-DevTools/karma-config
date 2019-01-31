@@ -1,5 +1,5 @@
 import { ConfigOptions, FilePattern } from "karma";
-import { arrayify } from "./util";
+import { arrayify, environmentFlag, environmentVariable } from "./util";
 
 /**
  * Options that control the generated Karma configuration
@@ -18,9 +18,34 @@ export interface Options {
    * If set to `true`, then Webpack will be configured to inject code-coverage instrumentation
    * and write code-coverage reports in the "coverage" directory.
    *
-   * Defaults to `false`, or `true` if the `--coverage` command-line flag is used when running Karma.
+   * This option can also be enabled by setting the `KARMA_COVERAGE` environment variable,
+   * or by using the `--coverage` command-line flag when running Karma.
+   *
+   * Defaults to `false`.
    */
   coverage?: boolean;
+
+  /**
+   * The operating system platform (e.g. "linux", "win32", "darwin", etc.).
+   * This determines which browsers will be launched by Karma.
+   *
+   * This option can also be set via the `KARMA_PLATFORM` environment variable.
+   *
+   * Defaults to `process.platform`.
+   *
+   * @see https://nodejs.org/api/process.html#process_process_platform
+   */
+  platform?: string;
+
+  /**
+   * Indicates whether Karma is running in a CI environment.
+   * If set to `true`, then Karma will be configured to run headless browsers where possible.
+   *
+   * This option can also be enabled by setting the `CI` or `KARMA_CI` environment variables.
+   *
+   * Defaults to `false`.
+   */
+  CI?: boolean;
 
   /**
    * The relative path of the source directory.
@@ -68,6 +93,10 @@ export interface Options {
 export interface NormalizedOptions {
   typescript: boolean;
   coverage: boolean;
+  windows: boolean;
+  mac: boolean;
+  linux: boolean;
+  CI: boolean;
   sourceDir: string;
   testDir: string;
   testFiles: Array<string | FilePattern>;
@@ -80,17 +109,56 @@ export interface NormalizedOptions {
  */
 export function normalizeOptions(options?: Partial<Options>): NormalizedOptions {
   options = options || {};
-  let typescript = options.typescript === undefined ? true : Boolean(options.typescript);
+  let typescript = options.typescript === undefined ? false : Boolean(options.typescript);
+  let coverage = options.coverage === undefined ? defaultCoverage() : Boolean(options.coverage);
+  let platform = options.platform === undefined ? defaultPlatform() : String(options.platform).toLowerCase();
+  let CI = options.CI === undefined ? defaultCI() : Boolean(options.CI);
   let sourceDir = options.sourceDir === undefined ? typescript ? "src" : "lib" : String(options.sourceDir);
   let testDir = options.testDir === undefined ? "test" : String(options.testDir);
 
+  let windows = /^win/.test(platform);
+  let mac = /^darwin|^mac|^osx/.test(platform);
+  let linux = !mac && !windows;
+
   return {
     typescript,
-    coverage: options.coverage === undefined ? process.argv.includes("--coverage") : Boolean(options.coverage),
+    coverage,
+    windows,
+    mac,
+    linux,
+    CI,
     sourceDir,
     testDir,
     testFiles: arrayify(options.testFiles) || [`${testDir}/**/*.+(spec|test).+(js|jsx)`],
     serveFiles: arrayify(options.serveFiles) || [`${testDir}/**/*`],
     config: Object.assign({}, options.config),
   };
+}
+
+/**
+ * Returns the default value for the `coverage` option, possibly from the CLI or environment variable.
+ */
+function defaultCoverage(): boolean {
+  let envVar = environmentFlag("KARMA_COVERAGE");
+  let cliFlag = process.argv.includes("--coverage");
+
+  return cliFlag || envVar;
+}
+
+/**
+ * Returns the default value for the `platform` option, possibly from an environment variable.
+ */
+function defaultPlatform(): string {
+  let envVar = environmentVariable("KARMA_PLATFORM");
+  return envVar || process.platform;
+}
+
+/**
+ * Returns the default value for the `CI` option, possibly from an environment variable.
+ */
+function defaultCI(): boolean {
+  let CI = environmentFlag("CI");
+  let karmaCI = environmentFlag("KARMA_CI");
+
+  return CI || karmaCI;
 }

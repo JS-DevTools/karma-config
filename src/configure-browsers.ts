@@ -1,77 +1,105 @@
+import { ConfigOptions } from "karma";
+import { NormalizedOptions } from "./options";
+import { mergeConfig, readPackageJson } from "./util";
+
 /**
  * Configures the browsers for the current platform
  */
-export function configureBrowsers(config) {
+export function configureBrowsers(config: ConfigOptions, { windows, mac, linux, CI }: NormalizedOptions): ConfigOptions {
+  if (config.browsers) {
+    // The user has already specified the browsers
+    return config;
+  }
 
-  ///////////////////// TODO - Get process from env variable
+  if (CI) {
+    if (windows) {
+      // Windows browsers aren't available in many CI systems, so try using SauceLabs
+      config = configureSauceLabs(config);
 
-  let isWindows = /^win/.test(process.platform) || process.env.WINDOWS === "true";
-  let isMac = /^darwin/.test(process.platform);
-  let isLinux = !isMac && !isWindows;
-  let isCI = process.env.CI === "true";
-
-  if (isCI) {
-    if (isWindows) {
-      // IE and Edge aren't available in CI, so use SauceLabs
-      configureSauceLabs(config);
+      if (!config.browsers) {
+        config.browsers = ["FirefoxHeadless", "ChromeHeadless", "Edge"];
+      }
     }
-    else if (isMac) {
+    else if (mac) {
       config.browsers = ["FirefoxHeadless", "ChromeHeadless", "Safari"];
     }
-    else if (isLinux) {
+    else if (linux) {
       config.browsers = ["FirefoxHeadless", "ChromeHeadless"];
     }
   }
-  else if (isMac) {
+  else if (mac) {
     config.browsers = ["Firefox", "Chrome", "Safari"];
   }
-  else if (isLinux) {
+  else if (linux) {
     config.browsers = ["Firefox", "Chrome"];
   }
-  else if (isWindows) {
+  else if (windows) {
     config.browsers = ["Firefox", "Chrome", "Edge"];
   }
+
+  return config;
 }
 
 /**
- * Configures Sauce Labs to test on IE and Edge.
- * https://github.com/karma-runner/karma-sauce-launcher
+ * Configures Karma to use Sauce Labs for Windows browser testing.
+ * Returns `false` if Sauce Labs credentials are not present.
+ *
+ * @see https://github.com/karma-runner/karma-sauce-launcher
  */
-function configureSauceLabs(config) {
+function configureSauceLabs(config: ConfigOptions): ConfigOptions {
   let username = process.env.SAUCE_USERNAME;
   let accessKey = process.env.SAUCE_ACCESS_KEY;
 
   if (!username || !accessKey) {
-    throw new Error("SAUCE_USERNAME and/or SAUCE_ACCESS_KEY is not set");
+    return config;
   }
 
-  let project = require("./package.json");
+  let buildNumber =
+    process.env.BUILD_NUMBER ||
+    process.env.BUILD_TAG ||
+    process.env.CI_BUILD_NUMBER ||
+    process.env.CI_BUILD_TAG ||
+    process.env.TRAVIS_BUILD_NUMBER ||
+    process.env.CIRCLE_BUILD_NUM ||
+    process.env.DRONE_BUILD_NUMBER;
 
-  config.sauceLabs = {
-    build: `${project.name} v${project.version} Build #${process.env.TRAVIS_JOB_NUMBER}`,
-    testName: `${project.name} v${project.version}`,
-    tags: [project.name],
-  };
+  let pkg = readPackageJson();
 
-  config.customLaunchers = {
-    // IE_11: {
-    //   base: "SauceLabs",
-    //   platform: "Windows 7",
-    //   browserName: "internet explorer"
-    // },
-    Edge: {
+  config.reporters!.push("saucelabs");
+
+  config = mergeConfig(config, {
+    browsers: ["Firefox_SauceLabs", "Chrome_SauceLabs", "Edge_SauceLabs"],
+    logLevel: "debug",
+    concurrency: 3,
+    captureTimeout: 60000,
+    browserDisconnectTolerance: 5,
+    browserDisconnectTimeout: 60000,
+    browserNoActivityTimeout: 60000,
+  });
+
+  config.sauceLabs = mergeConfig(config.sauceLabs, {
+    build: `${pkg.name} v${pkg.version} Build #${buildNumber}`,
+    testName: `${pkg.name} v${pkg.version}`,
+    tags: [pkg.name],
+  });
+
+  config.customLaunchers = mergeConfig(config.customLaunchers, {
+    Firefox_SauceLabs: {
       base: "SauceLabs",
       platform: "Windows 10",
-      browserName: "microsoftedge"
+      browserName: "firefox",
     },
-  };
+    Chrome_SauceLabs: {
+      base: "SauceLabs",
+      platform: "Windows 10",
+      browserName: "chrome",
+    },
+    Edge_SauceLabs: {
+      base: "SauceLabs",
+      platform: "Windows 10",
+      browserName: "microsoftedge",
+    },
+  });
 
-  config.reporters.push("saucelabs");
-  config.browsers = Object.keys(config.customLaunchers);
-  // config.concurrency = 1;
-  config.captureTimeout = 60000;
-  config.browserDisconnectTolerance = 5;
-  config.browserDisconnectTimeout = 60000;
-  config.browserNoActivityTimeout = 60000;
-  config.logLevel = "debug";
+  return config;
 }
