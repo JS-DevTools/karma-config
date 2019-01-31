@@ -1,6 +1,6 @@
 {
   "name": "karma-config",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Karma configuration builder with sensible defaults to minimize boilerplate",
   "keywords": [
     "karma",
@@ -58,7 +58,7 @@
   "devDependencies": {
     "@types/karma": "^3.0.1",
     "@types/karma-webpack": "^2.0.5",
-    "@types/node": "^10.12.18",
+    "@types/node": "^10.12.20",
     "@types/package-json": "^5.0.0",
     "@types/webpack": "^4.4.24",
     "chai": "^4.2.0",
