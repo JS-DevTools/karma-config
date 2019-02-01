@@ -1,6 +1,6 @@
 {
   "name": "karma-config",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Karma configuration builder with sensible defaults to minimize boilerplate",
   "keywords": [
     "karma",
@@ -56,7 +56,7 @@
   "devDependencies": {
     "@types/karma": "^3.0.1",
     "@types/karma-webpack": "^2.0.5",
-    "@types/node": "^10.12.20",
+    "@types/node": "^10.12.21",
     "@types/package-json": "^5.0.0",
     "@types/webpack": "^4.4.24",
     "chai": "^4.2.0",
@@ -70,7 +70,7 @@
     "tslint": "^5.12.0",
     "tslint-modular": "^1.1.7",
     "typescript": "^3.2.2",
-    "typescript-tslint-plugin": "^0.3.0",
+    "typescript-tslint-plugin": "^0.3.1",
     "version-bump-prompt": "^4.2.1"
   },
   "peerDependencies": {
