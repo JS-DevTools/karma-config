@@ -1,6 +1,7 @@
 import { ConfigOptions } from "karma";
 import { NormalizedOptions } from "./options";
-import { mergeConfig, readPackageJson } from "./util";
+import { readPackageJson } from "./package-json";
+import { mergeConfig } from "./util";
 
 /**
  * Configures the browsers for the current platform

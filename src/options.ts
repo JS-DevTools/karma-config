@@ -1,5 +1,4 @@
 import { ConfigOptions, FilePattern } from "karma";
-import { arrayify, environmentFlag, environmentVariable } from "./util";
 
 /**
  * Options that control the generated Karma configuration
@@ -161,4 +160,30 @@ function defaultCI(): boolean {
   let karmaCI = environmentFlag("KARMA_CI");
 
   return CI || karmaCI;
+}
+
+/**
+ * Wraps the given value in an array, if necessary
+ */
+export function arrayify<T>(value: T | T[] | undefined): T[] | undefined {
+  if (Array.isArray(value)) {
+    return value;
+  }
+  else if (value) {
+    return [value];
+  }
+}
+/**
+ * Returns the boolean value of the specified environment variable.
+ */
+export function environmentFlag(name: string): boolean {
+  let value = environmentVariable(name);
+  return !["", "false", "off", "no"].includes(value);
+}
+
+/**
+ * Returns the normalized string value of the specified environment variable.
+ */
+export function environmentVariable(name: string): string {
+  return (process.env[name] || "").trim().toLowerCase();
 }
