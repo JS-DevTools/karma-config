@@ -37,10 +37,8 @@
   },
   "dependencies": {
     "istanbul-instrumenter-loader": "^3.0.1",
-    "karma": "^4.0.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.2.0",
-    "karma-cli": "^2.0.0",
     "karma-coverage-istanbul-reporter": "^2.0.4",
     "karma-edge-launcher": "^0.4.2",
     "karma-firefox-launcher": "^1.1.0",
@@ -76,6 +74,7 @@
     "version-bump-prompt": "^4.2.1"
   },
   "peerDependencies": {
-    "karma": ">=4"
+    "karma": ">=4",
+    "karma-cli": ">=2"
   }
 }
