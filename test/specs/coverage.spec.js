@@ -42,6 +42,7 @@ describe("Code-coverage config", () => {
       coverageIstanbulReporter: {
         dir: "coverage/%browser%",
         reports: ["text-summary", "lcov"],
+        skipFilesWithNoCoverage: true,
       }
     }));
   });
@@ -72,6 +73,7 @@ describe("Code-coverage config", () => {
         coverageIstanbulReporter: {
           reports: ["lcovonly"],
           combineBrowserReports: true,
+          skipFilesWithNoCoverage: false,
         }
       }
     });
@@ -104,6 +106,7 @@ describe("Code-coverage config", () => {
         dir: "coverage/%browser%",
         reports: ["lcovonly"],
         combineBrowserReports: true,
+        skipFilesWithNoCoverage: false,
       }
     }));
   });
@@ -150,6 +153,7 @@ describe("Code-coverage config", () => {
       coverageIstanbulReporter: {
         dir: "coverage/%browser%",
         reports: ["text-summary", "lcov"],
+        skipFilesWithNoCoverage: true,
       }
     }));
   });

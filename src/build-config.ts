@@ -58,6 +58,7 @@ function configureCoverage(config: ConfigOptions, { coverage, sourceDir }: Norma
   config.coverageIstanbulReporter = mergeConfig(config.coverageIstanbulReporter, {
     dir: "coverage/%browser%",
     reports: ["text-summary", "lcov"],
+    skipFilesWithNoCoverage: true,
   });
 
   if (!hasWebpackLoader(config.webpack.module!.rules, "coverage-istanbul-loader")) {
