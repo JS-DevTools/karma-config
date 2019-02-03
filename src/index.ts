@@ -1,5 +1,6 @@
 // tslint:disable: no-default-export no-console
 import { Config } from "karma";
+import nodeUtil from "util";
 import { buildConfig } from "./build-config";
 import { Options } from "./options";
 
@@ -22,7 +23,11 @@ export default function karmaConfig(options: Options): KarmaConfig {
 
   return function configureKarma(karma) {
     if (config.logLevel !== karma.LOG_DISABLE) {
-      console.debug("Karma Config:\n", JSON.stringify(config, undefined, 2));
+      console.debug("Karma Config:\n", nodeUtil.inspect(config, {
+        depth: 10,
+        colors: true,
+        compact: false,
+      }));
     }
 
     karma.set(config);

@@ -71,9 +71,12 @@ describe("karmaConfig()", () => {
     expect(args).to.be.an("arguments");
     expect(args.length).to.equal(2);
     expect(args[0]).to.equal("Karma Config:\n");
-
-    let json = JSON.parse(args[1]);
-    expect(json).to.deep.equal(defaultConfig);
+    expect(args[1]).to.contain(
+      "  frameworks: [\n" +
+      "    \u001b[32m'mocha'\u001b[39m,\n" +
+      "    \u001b[32m'host-environment'\u001b[39m\n" +
+      "  ],\n"
+    );
   });
 
 });
