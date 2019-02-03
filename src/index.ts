@@ -18,7 +18,7 @@ export { buildConfig };
 /**
  * Cretaes a Kamra configuration based on the given options.
  */
-export default function karmaConfig(options: Options): KarmaConfig {
+export default function karmaConfig(options?: Options): KarmaConfig {
   let config = buildConfig(options);
 
   return function configureKarma(karma) {

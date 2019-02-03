@@ -7,7 +7,7 @@ import { mergeConfig } from "./util";
 /**
  * Builds the Kamra configuration object based on the given options.
  */
-export function buildConfig(options: Options): ConfigOptions {
+export function buildConfig(options?: Options): ConfigOptions {
   let opts = normalizeOptions(options);
 
   let config = mergeConfig(opts.config, {

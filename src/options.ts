@@ -98,7 +98,7 @@ export interface NormalizedOptions {
 /**
  * Normalizes user-specified options and applies defaults.
  */
-export function normalizeOptions(options?: Partial<Options>): NormalizedOptions {
+export function normalizeOptions(options?: Options): NormalizedOptions {
   options = options || {};
   let coverage = options.coverage === undefined ? defaultCoverage() : Boolean(options.coverage);
   let platform = options.platform === undefined ? defaultPlatform() : String(options.platform).toLowerCase();
