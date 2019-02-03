@@ -99,8 +99,8 @@ function hasWebpackLoader(rules: RuleSetRule[], name: string): boolean {
           }
         }
       }
-      else {
-        return webpackLoaderName(rule.use as RuleSetUseItem) === name;
+      else if (webpackLoaderName(rule.use as RuleSetUseItem) === name) {
+        return true;
       }
     }
   }

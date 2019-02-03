@@ -50,6 +50,7 @@ describe("Code-coverage config", () => {
     let config = buildConfig({
       coverage: true,
       config: {
+        reporters: ["coverage-istanbul"],
         webpack: {
           module: {
             rules: [
@@ -77,7 +78,6 @@ describe("Code-coverage config", () => {
 
     expect(config).to.deep.equal(mergeConfig({
       reporters: [
-        "verbose",
         "coverage-istanbul"
       ],
       webpack: {
@@ -104,6 +104,52 @@ describe("Code-coverage config", () => {
         dir: "coverage/%browser%",
         reports: ["lcovonly"],
         combineBrowserReports: true,
+      }
+    }));
+  });
+
+  it("should not override add coverage-istanbul-loader if the user alread added it", () => {
+    let config = buildConfig({
+      coverage: true,
+      config: {
+        webpack: {
+          module: {
+            rules: [
+              {
+                test: /\.ts$/,
+                use: "ts-loader",
+              },
+              {
+                test: /src\/*\.*/,
+                use: "coverage-istanbul-loader"
+              }
+            ],
+          }
+        },
+      }
+    });
+
+    expect(config).to.deep.equal(mergeConfig({
+      reporters: ["verbose", "coverage-istanbul"],
+      webpack: {
+        mode: "development",
+        devtool: "inline-source-map",
+        module: {
+          rules: [
+            {
+              test: /\.ts$/,
+              use: "ts-loader",
+            },
+            {
+              test: /src\/*\.*/,
+              use: "coverage-istanbul-loader"
+            }
+          ],
+        }
+      },
+      coverageIstanbulReporter: {
+        dir: "coverage/%browser%",
+        reports: ["text-summary", "lcov"],
       }
     }));
   });
