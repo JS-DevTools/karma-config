@@ -60,18 +60,13 @@ function configureCoverage(config: ConfigOptions, { coverage, sourceDir }: Norma
     reports: ["text-summary", "lcov"],
   });
 
-  if (!hasWebpackLoader(config.webpack.module!.rules, "istanbul-instrumenter-loader")) {
+  if (!hasWebpackLoader(config.webpack.module!.rules, "coverage-istanbul-loader")) {
     config.webpack.module!.rules.push({
       test: /\.jsx?$/,
       include: new RegExp(sourceDir.replace(/\//g, "\/")),
       exclude: /node_modules|\.spec\.|\.test\./,
       enforce: "post",
-      use: {
-        loader: "istanbul-instrumenter-loader",
-        options: {
-          esModules: true,
-        },
-      }
+      use: "coverage-istanbul-loader",
     });
   }
 
