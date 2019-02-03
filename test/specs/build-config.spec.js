@@ -2,8 +2,8 @@
 
 const { buildConfig } = require("../../");
 const { expect } = require("chai");
-const { defaultConfig, mergeConfig } = require("../fixtures/config");
-const envVars = require("../fixtures/env-vars");
+const { defaultConfig, mergeConfig } = require("../utils/config");
+const envVars = require("../utils/env-vars");
 
 describe("buildConfig()", () => {
   beforeEach(envVars.override);

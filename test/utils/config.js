@@ -17,7 +17,7 @@ switch (process.platform) {
 
 const defaultConfig = {
   browsers,
-  frameworks: ["mocha", "chai", "host-environment"],
+  frameworks: ["mocha", "host-environment"],
   files: [
     "test/**/*.+(spec|test).+(js|jsx)",
     { pattern: "test/**/*", included: false, served: true }
