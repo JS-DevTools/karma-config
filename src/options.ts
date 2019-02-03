@@ -5,40 +5,6 @@ import { ConfigOptions, FilePattern } from "karma";
  */
 export interface Options {
   /**
-   * Indicates whether code coverage analysis should be performed.
-   * If set to `true`, then Webpack will be configured to inject code-coverage instrumentation
-   * and write code-coverage reports in the "coverage" directory.
-   *
-   * This option can also be enabled by setting the `KARMA_COVERAGE` environment variable,
-   * or by using the `--coverage` command-line flag when running Karma.
-   *
-   * Defaults to `false`.
-   */
-  coverage?: boolean;
-
-  /**
-   * The operating system platform (e.g. "linux", "win32", "darwin", etc.).
-   * This determines which browsers will be launched by Karma.
-   *
-   * This option can also be set via the `KARMA_PLATFORM` environment variable.
-   *
-   * Defaults to `process.platform`.
-   *
-   * @see https://nodejs.org/api/process.html#process_process_platform
-   */
-  platform?: string;
-
-  /**
-   * Indicates whether Karma is running in a CI environment.
-   * If set to `true`, then Karma will be configured to run headless browsers where possible.
-   *
-   * This option can also be enabled by setting the `CI` or `KARMA_CI` environment variables.
-   *
-   * Defaults to `false`.
-   */
-  CI?: boolean;
-
-  /**
    * The relative path of the source directory.
    *
    * Defaults to "src".
@@ -68,6 +34,41 @@ export interface Options {
    * Defaults to all files under the `testDir`.
    */
   serve?: string | FilePattern | Array<string | FilePattern>;
+
+  /**
+   * Indicates whether code coverage analysis should be performed.
+   * If set to `true`, then Webpack will be configured to inject code-coverage instrumentation
+   * and write code-coverage reports in the "coverage" directory.
+   *
+   * This option can also be enabled by setting the `KARMA_COVERAGE` environment variable,
+   * or by using the `--coverage` command-line flag when running Karma.
+   *
+   * Defaults to `false`.
+   */
+  coverage?: boolean;
+
+  /**
+   * The operating system platform (e.g. "linux", "win32", "darwin", etc.).
+   * This determines which browsers will be launched by Karma.
+   *
+   * This option can also be set via the `KARMA_PLATFORM` environment variable.
+   *
+   * Defaults to `process.platform`.
+   *
+   * @see https://nodejs.org/api/process.html#process_process_platform
+   */
+  platform?: string;
+
+  /**
+   * Indicates whether Karma is running in a CI environment.
+   * If set to `true`, then Karma will be configured to run headless browsers where possible.
+   *
+   * This option can also be enabled by setting the `CI` or `KARMA_CI` environment variables.
+   * Most CI/CD servers automatically set the `CI` environment variable.
+   *
+   * Defaults to `false`.
+   */
+  CI?: boolean;
 
   /**
    * Explicit Karma configuration settings. This is useful for adding additional settings that
