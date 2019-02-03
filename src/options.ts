@@ -5,14 +5,6 @@ import { ConfigOptions, FilePattern } from "karma";
  */
 export interface Options {
   /**
-   * Indicates whether this is a TypeScript project (i.e. the source is written in TypeScript).
-   * If set to `true`, then Webpack will be configured to support TypeScript.
-   *
-   * Defaults to `false`.
-   */
-  typescript?: boolean;
-
-  /**
    * Indicates whether code coverage analysis should be performed.
    * If set to `true`, then Webpack will be configured to inject code-coverage instrumentation
    * and write code-coverage reports in the "coverage" directory.
@@ -49,7 +41,7 @@ export interface Options {
   /**
    * The relative path of the source directory.
    *
-   * Defaults to "lib", or "src" if this is a TypeScript project.
+   * Defaults to "src".
    */
   sourceDir?: string;
 
@@ -90,7 +82,6 @@ export interface Options {
  * Normalized options with defaults applied.
  */
 export interface NormalizedOptions {
-  typescript: boolean;
   coverage: boolean;
   windows: boolean;
   mac: boolean;
@@ -108,11 +99,10 @@ export interface NormalizedOptions {
  */
 export function normalizeOptions(options?: Partial<Options>): NormalizedOptions {
   options = options || {};
-  let typescript = options.typescript === undefined ? false : Boolean(options.typescript);
   let coverage = options.coverage === undefined ? defaultCoverage() : Boolean(options.coverage);
   let platform = options.platform === undefined ? defaultPlatform() : String(options.platform).toLowerCase();
   let CI = options.CI === undefined ? defaultCI() : Boolean(options.CI);
-  let sourceDir = options.sourceDir === undefined ? typescript ? "src" : "lib" : String(options.sourceDir);
+  let sourceDir = options.sourceDir === undefined ? "src" : String(options.sourceDir);
   let testDir = options.testDir === undefined ? "test" : String(options.testDir);
 
   let windows = /^win/.test(platform);
@@ -120,7 +110,6 @@ export function normalizeOptions(options?: Partial<Options>): NormalizedOptions 
   let linux = !mac && !windows;
 
   return {
-    typescript,
     coverage,
     windows,
     mac,

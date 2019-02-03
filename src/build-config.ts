@@ -18,7 +18,6 @@ export function buildConfig(options: Options): ConfigOptions {
 
   config = configureWebpack(config, opts);
   config = configureBrowsers(config, opts);
-  config = configureTypescript(config, opts);
   config = configureCoverage(config, opts);
 
   return config;
@@ -45,43 +44,9 @@ function configureWebpack(config: ConfigOptions, { testDir }: NormalizedOptions)
 }
 
 /**
- * Configures Karma and Webpack to support TypeScript files.
- */
-function configureTypescript(config: ConfigOptions, { typescript }: NormalizedOptions): ConfigOptions {
-  const tsExtensions = ["ts", "tsx"];
-
-  if (!typescript) {
-    return config;
-  }
-
-  config.mime = mergeConfig(config.mime, {
-    "text/x-typescript": tsExtensions,
-  });
-
-  config.webpack.resolve = mergeConfig(config.webpack.resolve, {
-    extensions: [".js", ".jsx", ".mjs", ".json"],
-  });
-
-  for (let ext of tsExtensions) {
-    if (!config.webpack.resolve.extensions!.includes("." + ext)) {
-      config.webpack.resolve.extensions!.push("." + ext);
-    }
-  }
-
-  if (!hasWebpackLoader(config.webpack.module!.rules, "ts-loader")) {
-    // Insert the ts-loader at the beginning of the rules list
-    config.webpack.module!.rules.unshift({ test: /\.tsx?$/, use: "ts-loader" });
-  }
-
-  return config;
-}
-
-/**
  * Configures Karma and Webpack to gather code-coverage data.
  */
-function configureCoverage(config: ConfigOptions, options: NormalizedOptions): ConfigOptions {
-  let { coverage, typescript, sourceDir } = options;
-
+function configureCoverage(config: ConfigOptions, { coverage, sourceDir }: NormalizedOptions): ConfigOptions {
   if (!coverage) {
     return config;
   }
@@ -97,7 +62,7 @@ function configureCoverage(config: ConfigOptions, options: NormalizedOptions): C
 
   if (!hasWebpackLoader(config.webpack.module!.rules, "istanbul-instrumenter-loader")) {
     config.webpack.module!.rules.push({
-      test: typescript ? /\.tsx?$/ : /\.jsx?$/,
+      test: /\.jsx?$/,
       include: new RegExp(sourceDir.replace(/\//g, "\/")),
       exclude: /node_modules|\.spec\.|\.test\./,
       enforce: "post",

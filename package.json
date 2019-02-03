@@ -50,7 +50,6 @@
     "karma-verbose-reporter": "0.0.6",
     "karma-webpack": "^3.0.5",
     "ono": "^4.0.11",
-    "ts-loader": "^5.3.3",
     "webpack": "^4.29.0"
   },
   "devDependencies": {
