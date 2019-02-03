@@ -11,7 +11,7 @@ export function buildConfig(options: Options): ConfigOptions {
   let opts = normalizeOptions(options);
 
   let config = mergeConfig(opts.config, {
-    frameworks: ["mocha", "chai", "host-environment"],
+    frameworks: ["mocha", "host-environment"],
     reporters: ["verbose"],
     files: opts.testFiles.concat(opts.serveFiles.map(serveFile)),
   });
