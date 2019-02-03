@@ -1,38 +1,17 @@
-// tslint:disable: no-default-export no-console
-import { Config } from "karma";
-import nodeUtil from "util";
-import { buildConfig } from "./build-config";
-import { Options } from "./options";
+// tslint:disable: no-default-export
+import { KarmaConfig, karmaConfig } from "./karma-config";
 
-/**
- * A function that sets the Karma configuration
- */
-export type KarmaConfig = (karma: Config) => void;
+// Export type definitions as named exports
+export { Options } from "./options";
+export { KarmaConfig };
 
-/**
- * Allow users to call `buildConfig()` directly, so they can modify the output
- * before sending it to Karma.
- */
-export { buildConfig };
+// Export `buildConfig()` as a named export, so users can modify
+// the output before sending it to Karma.
+export { buildConfig } from "./build-config";
 
-/**
- * Cretaes a Kamra configuration based on the given options.
- */
-export default function karmaConfig(options?: Options): KarmaConfig {
-  let config = buildConfig(options);
-
-  return function configureKarma(karma) {
-    if (config.logLevel !== karma.LOG_DISABLE) {
-      console.debug("Karma Config:\n", nodeUtil.inspect(config, {
-        depth: 10,
-        colors: true,
-        compact: false,
-      }));
-    }
-
-    karma.set(config);
-  };
-}
+// Export `karmaConfig()` as a named export and the default export
+export { karmaConfig };
+export default karmaConfig;
 
 // CommonJS default export hack
 // tslint:disable: no-unsafe-any

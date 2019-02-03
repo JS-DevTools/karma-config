@@ -5,7 +5,7 @@ const { expect } = require("chai");
 
 describe("package exports", () => {
 
-  it("should export the karmaConfig function as a CommonJS export", () => {
+  it("should export the karmaConfig function the default CommonJS export", () => {
     expect(karmaConfig).to.be.a("function");
     expect(karmaConfig.name).to.equal("karmaConfig");
     expect(karmaConfig.length).to.equal(1);
@@ -15,6 +15,12 @@ describe("package exports", () => {
     expect(karmaConfig).to.have.property("default");
     expect(karmaConfig.default).to.be.a("function");
     expect(karmaConfig.default).to.equal(karmaConfig);
+  });
+
+  it("should export the karmaConfig function as a named ESM export", () => {
+    expect(karmaConfig).to.have.property("karmaConfig");
+    expect(karmaConfig.karmaConfig).to.be.a("function");
+    expect(karmaConfig.karmaConfig).to.equal(karmaConfig);
   });
 
   it("should export the buildConfig function", () => {
@@ -27,7 +33,8 @@ describe("package exports", () => {
   it("should not export anything else", () => {
     expect(karmaConfig).to.have.keys([
       "default",
-      "buildConfig"
+      "buildConfig",
+      "karmaConfig",
     ]);
   });
 
