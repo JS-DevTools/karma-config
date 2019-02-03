@@ -59,7 +59,7 @@ export interface Options {
    * Defaults to all JavaScript files under the `testDir` that have ".spec" or ".test" before
    * their file extension (e.g. "test/scripts/my-lib.spec.js")
    */
-  testFiles?: string | FilePattern | Array<string | FilePattern>;
+  tests?: string | FilePattern | Array<string | FilePattern>;
 
   /**
    * One or more file patterns that Karma will allow to be served. This allows your tests to
@@ -67,7 +67,7 @@ export interface Options {
    *
    * Defaults to all files under the `testDir`.
    */
-  serveFiles?: string | FilePattern | Array<string | FilePattern>;
+  serve?: string | FilePattern | Array<string | FilePattern>;
 
   /**
    * Explicit Karma configuration settings. This is useful for adding additional settings that
@@ -89,8 +89,8 @@ export interface NormalizedOptions {
   CI: boolean;
   sourceDir: string;
   testDir: string;
-  testFiles: Array<string | FilePattern>;
-  serveFiles: Array<string | FilePattern>;
+  tests: Array<string | FilePattern>;
+  serve: Array<string | FilePattern>;
   config: ConfigOptions;
 }
 
@@ -117,8 +117,8 @@ export function normalizeOptions(options?: Partial<Options>): NormalizedOptions 
     CI,
     sourceDir,
     testDir,
-    testFiles: arrayify(options.testFiles) || [`${testDir}/**/*.+(spec|test).+(js|jsx)`],
-    serveFiles: arrayify(options.serveFiles) || [`${testDir}/**/*`],
+    tests: arrayify(options.tests) || [`${testDir}/**/*.+(spec|test).+(js|jsx)`],
+    serve: arrayify(options.serve) || [`${testDir}/**/*`],
     config: Object.assign({}, options.config),
   };
 }

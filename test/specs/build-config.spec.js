@@ -30,4 +30,32 @@ describe("buildConfig()", () => {
     }));
   });
 
+  it("should serve a single file", () => {
+    let config = buildConfig({ serve: "path/to/my/file.json" });
+
+    expect(config).to.deep.equal(mergeConfig({
+      files: [
+        "test/**/*.+(spec|test).+(js|jsx)",
+        { pattern: "path/to/my/file.json", included: false, served: true }
+      ],
+    }));
+  });
+
+  it("should serve multiple files", () => {
+    let config = buildConfig({
+      serve: [
+        "path/to/some/**/*.files",
+        { pattern: "more/**/*.files" }
+      ],
+    });
+
+    expect(config).to.deep.equal(mergeConfig({
+      files: [
+        "test/**/*.+(spec|test).+(js|jsx)",
+        { pattern: "path/to/some/**/*.files", included: false, served: true },
+        { pattern: "more/**/*.files", served: true },
+      ],
+    }));
+  });
+
 });

@@ -2,7 +2,7 @@
 
 const karmaConfig = require("../../");
 const { expect } = require("chai");
-const { defaultConfig, mergeConfig } = require("../utils/config");
+const { mergeConfig } = require("../utils/config");
 const envVars = require("../utils/env-vars");
 
 describe("karmaConfig()", () => {

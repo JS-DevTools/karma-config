@@ -13,7 +13,7 @@ export function buildConfig(options: Options): ConfigOptions {
   let config = mergeConfig(opts.config, {
     frameworks: ["mocha", "host-environment"],
     reporters: ["verbose"],
-    files: opts.testFiles.concat(opts.serveFiles.map(serveFile)),
+    files: opts.tests.concat(opts.serve.map(serveFile)),
   });
 
   config = configureWebpack(config, opts);
