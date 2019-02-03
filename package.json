@@ -6,7 +6,12 @@
     "karma",
     "config",
     "configuration",
-    "defaults"
+    "defaults",
+    "boilerplate",
+    "test",
+    "testing",
+    "browser",
+    "browser testing"
   ],
   "author": {
     "name": "James Messinger",
