@@ -137,7 +137,7 @@ Another option is to use Karma-Config's `buildConfig` function, which returns th
 ```javascript
 const { buildConfig } = require("karma-config");
 
-module.exports = (karma) => {{
+module.exports = (karma) => {
   // Let Karma-Config generate its config, as usual
   let config = buildConfig();
 
