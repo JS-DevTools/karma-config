@@ -55,6 +55,7 @@ describe("karmaConfig()", () => {
 
   it("should log the config if the logLevel is set", () => {
     let originalConsoleDebug = console.debug;
+    let nodeVersion = parseFloat(process.version.substr(1));
     let args;
 
     console.debug = function mockConsoleDebug () {
@@ -71,12 +72,21 @@ describe("karmaConfig()", () => {
     expect(args).to.be.an("arguments");
     expect(args.length).to.equal(2);
     expect(args[0]).to.equal("Karma Config:\n");
-    expect(args[1]).to.contain(
-      "  frameworks: [\n" +
-      "    \u001b[32m'mocha'\u001b[39m,\n" +
-      "    \u001b[32m'host-environment'\u001b[39m\n" +
-      "  ],\n"
-    );
+
+    if (nodeVersion >= 9.9) {
+      expect(args[1]).to.contain(
+        "  frameworks: [\n" +
+        "    \u001b[32m'mocha'\u001b[39m,\n" +
+        "    \u001b[32m'host-environment'\u001b[39m\n" +
+        "  ],\n"
+      );
+    }
+    else {
+      // The `compact: false` option isn't supported on older versions of Node
+      expect(args[1]).to.contain(
+        "frameworks: [ \u001b[32m\'mocha\'\u001b[39m, \u001b[32m\'host-environment\'\u001b[39m ],\n"
+      );
+    }
   });
 
 });
