@@ -7,6 +7,9 @@ let envDefaults = {
   KARMA_PLATFORM: "",
   KARMA_CI: "",
   CI: "",
+  CI_BUILD_NUMBER: "",
+  SAUCE_USERNAME: "",
+  SAUCE_ACCESS_KEY: "",
 };
 
 module.exports = {
