@@ -49,7 +49,7 @@ describe("karmaConfig()", () => {
 
     expect(withOptions).not.to.throw();
     testConfigureKarma(fn, {
-      browsers: ["Firefox", "Chrome", "Safari"]
+      browsers: ["Chrome", "Firefox", "Safari"]
     });
   });
 

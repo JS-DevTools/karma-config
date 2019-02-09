@@ -4,7 +4,7 @@
  * @typedef {import("karma").ConfigOptions} ConfigOptions
  */
 
-let browsers = ["Firefox", "Chrome"];
+let browsers = ["Chrome", "Firefox"];
 
 switch (process.platform) {
   case "win32":
