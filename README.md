@@ -23,7 +23,7 @@ Karma-Config eliminates the redundancy and boilerplate by applying sensible defa
 Features
 --------------------------
 - Applies sensible defaults, but will never override your settings
-- Uses the appropraite browsers for the OS (e.g. Safari on Mac, Edge on Windows)
+- Uses the appropraite browsers for the platform (e.g. Safari on Mac, Edge on Windows)
 - Uses headless browsers when running in CI/CD
 - Produces code-coverage reports if `KARMA_COVERAGE` env var is set, or if you add `--coverage` when running Karma
 
@@ -166,21 +166,31 @@ module.exports = require("karma-config")({
   sourceDir: "my/source/dir",             // Override the default sourceDir ("src")
   testDir: "my/test/dir",                 // Override the default testDir ("test")
   coverage: true,                         // Always produce a code-coverage report
+  browsers: {
+    firefox: false,                       // Don't test in Firefox on any OS
+    ie: true,                             // Test in Internet Explorer on Windows
+  }
 });
 ```
 
 ### All Options
 
-|Option          |Type              |Default Value            |Description
-|:---------------|:-----------------|:------------------------|:------------------------------------------------
-|`sourceDir`     |`string`          |`src`                    |The relative path of the source directory.
-|`testDir`       |`string`          |`test`                   |The relative path of the test directory.
-|`tests`         |`string` `string[]` `object` `object[]`|`${testDir}/**/*.spec.js` `${testDir}/**/*.test.js` `${testDir}/**/*.spec.jsx` `${testDir}/**/*.test.jsx`|One or more [file patterns](https://karma-runner.github.io/3.0/config/files.html) that specify your test files. These are the files that will be bundled by Webpack and run by Karma.
-|`serve`         |`string` `string[]` `object` `object[]`|`${testDir}/**/*`|One or more [file patterns](https://karma-runner.github.io/3.0/config/files.html) that Karma will allow to be served. This is useful for loading test data from CSV or JSON files.
-|`coverage`      |`boolean`         |`false`                  |Indicates whether code coverage analysis should be performed. If set to `true`, then Webpack will be configured to inject code-coverage instrumentation and write code-coverage reports in the `./coverage/` directory.<br><br>This option can also be enabled by setting the `KARMA_COVERAGE` environment variable, or by using the `--coverage` command-line flag when running Karma.
-|`platform`      |`string`          |[`process.platform`](https://nodejs.org/api/process.html#process_process_platform) |The operating system platform (e.g. "linux", "win32", "darwin", etc.). This determines which browsers will be launched by Karma.<br><br>This option can also be set via the `KARMA_PLATFORM` environment variable.
-|`CI`            |`boolean`         |`false`                  |Indicates whether Karma is running in a CI environment. If set to `true`, then Karma will be configured to run headless browsers where possible.<br><br>This option can also be enabled by setting the `CI` or `KARMA_CI` environment variables.  Most CI/CD servers automatically set the `CI` environment variable.
-|`config`        |`object`          |`{}`                     |Explicit Karma configuration settings. This is useful for adding additional settings that aren't normally set by Karma-Config, or for overriding Karma-Config's settings.
+|Option            |Type              |Default Value            |Description
+|:-----------------|:-----------------|:------------------------|:------------------------------------------------
+|`browsers`        |`object`          |                         |This object allows you to specify which browsers you support.
+|`browsers.chrome` |`boolean`         |`true`                   |Indicates whether Chrome is supported. If `true`, then tests will be run in Chrome on all OSes.
+|`browsers.firefox`|`boolean`         |`true`                   |Indicates whether Firefox is supported. If `true`, then tests will be run in Firefox on all OSes.
+|`browsers.safari` |`boolean`         |`true`                   |Indicates whether Safari is supported. If `true`, then tests will be run in Safari when on a Mac.
+|`browsers.edge`   |`boolean`         |`true`                   |Indicates whether Edge is supported. If `true`, then tests will be run in Edge when on Windows.
+|`browsers.ie`     |`boolean`         |`false`                  |Indicates whether Internet Explorer is supported. If `true`, then tests will be run in Internet Explorer when on Windows.
+|`sourceDir`       |`string`          |`src`                    |The relative path of the source directory.
+|`testDir`         |`string`          |`test`                   |The relative path of the test directory.
+|`tests`           |`string` `string[]` `object` `object[]`|`${testDir}/**/*.spec.js` `${testDir}/**/*.test.js` `${testDir}/**/*.spec.jsx` `${testDir}/**/*.test.jsx`|One or more [file patterns](https://karma-runner.github.io/3.0/config/files.html) that specify your test files. These are the files that will be bundled by Webpack and run by Karma.
+|`serve`           |`string` `string[]` `object` `object[]`|`${testDir}/**/*`|One or more [file patterns](https://karma-runner.github.io/3.0/config/files.html) that Karma will allow to be served. This is useful for loading test data from CSV or JSON files.
+|`coverage`        |`boolean`         |`false`                  |Indicates whether code coverage analysis should be performed. If set to `true`, then Webpack will be configured to inject code-coverage instrumentation and write code-coverage reports in the `./coverage/` directory.<br><br>This option can also be enabled by setting the `KARMA_COVERAGE` environment variable, or by using the `--coverage` command-line flag when running Karma.
+|`platform`        |`string`          |[`process.platform`](https://nodejs.org/api/process.html#process_process_platform) |The operating system platform (e.g. "linux", "win32", "darwin", etc.). This determines which browsers will be launched by Karma.<br><br>This option can also be set via the `KARMA_PLATFORM` environment variable.
+|`CI`              |`boolean`         |`false`                  |Indicates whether Karma is running in a CI environment. If set to `true`, then Karma will be configured to run headless browsers where possible.<br><br>This option can also be enabled by setting the `CI` or `KARMA_CI` environment variables.  Most CI/CD servers automatically set the `CI` environment variable.
+|`config`          |`object`          |`{}`                     |Explicit Karma configuration settings. This is useful for adding additional settings that aren't normally set by Karma-Config, or for overriding Karma-Config's settings.
 
 
 
