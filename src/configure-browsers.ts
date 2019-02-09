@@ -6,36 +6,40 @@ import { mergeConfig } from "./util";
 /**
  * Configures the browsers for the current platform
  */
-export function configureBrowsers(config: ConfigOptions, { windows, mac, linux, CI }: NormalizedOptions): ConfigOptions {
+export function configureBrowsers(config: ConfigOptions, options: NormalizedOptions): ConfigOptions {
   if (config.browsers) {
     // The user has already specified the browsers
     return config;
   }
 
+  let { windows, mac, CI, browsers: { chrome, firefox, safari, edge, ie }} = options;
+  let browsers = config.browsers = [] as string[];
+
   if (CI) {
     if (windows) {
       // Windows browsers aren't available in many CI systems, so try using SauceLabs
-      config = configureSauceLabs(config);
+      config = configureSauceLabs(config, options);
+      browsers = config.browsers!;
 
-      if (!config.browsers) {
-        config.browsers = ["FirefoxHeadless", "ChromeHeadless", "Edge"];
+      if (browsers.length === 0) {
+        chrome && browsers.push("ChromeHeadless");
+        firefox && browsers.push("FirefoxHeadless");
+        edge && browsers.push("Edge");
+        ie && browsers.push("IE");
       }
     }
-    else if (mac) {
-      config.browsers = ["FirefoxHeadless", "ChromeHeadless", "Safari"];
+    else {
+      chrome && browsers.push("ChromeHeadless");
+      firefox && browsers.push("FirefoxHeadless");
+      mac && safari && browsers.push("Safari");
     }
-    else if (linux) {
-      config.browsers = ["FirefoxHeadless", "ChromeHeadless"];
-    }
   }
-  else if (mac) {
-    config.browsers = ["Firefox", "Chrome", "Safari"];
-  }
-  else if (linux) {
-    config.browsers = ["Firefox", "Chrome"];
-  }
-  else if (windows) {
-    config.browsers = ["Firefox", "Chrome", "Edge"];
+  else {
+    chrome && browsers.push("Chrome");
+    firefox && browsers.push("Firefox");
+    mac && safari && browsers.push("Safari");
+    windows && edge && browsers.push("Edge");
+    windows && ie && browsers.push("IE");
   }
 
   return config;
@@ -47,7 +51,9 @@ export function configureBrowsers(config: ConfigOptions, { windows, mac, linux, 
  *
  * @see https://github.com/karma-runner/karma-sauce-launcher
  */
-function configureSauceLabs(config: ConfigOptions): ConfigOptions {
+function configureSauceLabs(config: ConfigOptions, options: NormalizedOptions): ConfigOptions {
+  let { browsers: { chrome, firefox, edge, ie }} = options;
+  let browsers = config.browsers!;
   let username = process.env.SAUCE_USERNAME;
   let accessKey = process.env.SAUCE_ACCESS_KEY;
 
@@ -69,7 +75,6 @@ function configureSauceLabs(config: ConfigOptions): ConfigOptions {
   config.reporters!.push("saucelabs");
 
   config = mergeConfig(config, {
-    browsers: ["Firefox_SauceLabs", "Chrome_SauceLabs", "Edge_SauceLabs"],
     logLevel: "debug",
     concurrency: 3,
     captureTimeout: 60000,
@@ -84,23 +89,43 @@ function configureSauceLabs(config: ConfigOptions): ConfigOptions {
     tags: [pkg.name!],
   });
 
-  config.customLaunchers = mergeConfig(config.customLaunchers, {
-    Firefox_SauceLabs: {
-      base: "SauceLabs",
-      platform: "Windows 10",
-      browserName: "firefox",
-    },
-    Chrome_SauceLabs: {
+  config.customLaunchers = config.customLaunchers || {};
+
+  if (chrome) {
+    browsers.push("Chrome_SauceLabs");
+    config.customLaunchers.Chrome_SauceLabs = {
       base: "SauceLabs",
       platform: "Windows 10",
       browserName: "chrome",
-    },
-    Edge_SauceLabs: {
+    };
+  }
+
+  if (firefox) {
+    browsers.push("Firefox_SauceLabs");
+    config.customLaunchers.Firefox_SauceLabs = {
+      base: "SauceLabs",
+      platform: "Windows 10",
+      browserName: "firefox",
+    };
+  }
+
+  if (edge) {
+    browsers.push("Edge_SauceLabs");
+    config.customLaunchers.Edge_SauceLabs = {
       base: "SauceLabs",
       platform: "Windows 10",
       browserName: "microsoftedge",
-    },
-  });
+    };
+  }
+
+  if (ie) {
+    browsers.push("IE_SauceLabs");
+    config.customLaunchers.IE_SauceLabs = {
+      base: "SauceLabs",
+      platform: "Windows 10",
+      browserName: "internet explorer"
+    };
+  }
 
   return config;
 }
