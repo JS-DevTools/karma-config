@@ -1,7 +1,8 @@
 import { ConfigOptions, FilePattern } from "karma";
 import { RuleSetRule, RuleSetUseItem } from "webpack";
 import { configureBrowsers } from "./configure-browsers";
-import { NormalizedOptions, normalizeOptions, Options } from "./options";
+import { NormalizedOptions, normalizeOptions } from "./normalize-options";
+import { Options } from "./options";
 import { mergeConfig } from "./util";
 
 /**

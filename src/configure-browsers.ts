@@ -1,5 +1,5 @@
 import { ConfigOptions } from "karma";
-import { NormalizedOptions } from "./options";
+import { NormalizedOptions } from "./normalize-options";
 import { readPackageJson } from "./package-json";
 import { mergeConfig } from "./util";
 
