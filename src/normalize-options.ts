@@ -15,6 +15,13 @@ export interface NormalizedOptions {
   tests: Array<string | FilePattern>;
   serve: Array<string | FilePattern>;
   config: ConfigOptions;
+  browsers: {
+    chrome: boolean;
+    firefox: boolean;
+    safari: boolean;
+    edge: boolean;
+    ie: boolean;
+  };
 }
 
 /**
@@ -22,6 +29,7 @@ export interface NormalizedOptions {
  */
 export function normalizeOptions(options?: Options): NormalizedOptions {
   options = options || {};
+  options.browsers = options.browsers || {};
 
   let platform = normalizeOption(options.platform, defaultPlatform(), String).toLowerCase();
   let windows = /^win/.test(platform);
@@ -41,6 +49,13 @@ export function normalizeOptions(options?: Options): NormalizedOptions {
     tests: arrayify(options.tests) || [`${testDir}/**/*.+(spec|test).+(js|jsx)`],
     serve: arrayify(options.serve) || [`${testDir}/**/*`],
     config: Object.assign({}, options.config),
+    browsers: {
+      chrome: normalizeOption(options.browsers.chrome, true, Boolean),
+      firefox: normalizeOption(options.browsers.firefox, true, Boolean),
+      safari: normalizeOption(options.browsers.safari, true, Boolean),
+      edge: normalizeOption(options.browsers.edge, true, Boolean),
+      ie: normalizeOption(options.browsers.ie, false, Boolean),
+    },
   };
 }
 

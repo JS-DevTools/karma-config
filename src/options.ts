@@ -5,6 +5,47 @@ import { ConfigOptions, FilePattern } from "karma";
  */
 export interface Options {
   /**
+   * Indicates which browsers you want to support.
+   */
+  browsers?: {
+    /**
+     * Indicates whether Chrome is supported.  If `true`, then your tests will be run in Chrome on all platforms.
+     *
+     * Defaults to `true`.
+     */
+    chrome?: boolean;
+
+    /**
+     * Indicates whether Firefox is supported.  If `true`, then your tests will be run in Firefox on all platforms.
+     *
+     * Defaults to `true`.
+     */
+    firefox?: boolean;
+
+    /**
+     * Indicates whether Safari is supported.  If `true`, then your tests will be run in Safari when on a Mac.
+     *
+     * Defaults to `true`.
+     */
+    safari?: boolean;
+
+    /**
+     * Indicates whether Edge is supported.  If `true`, then your tests will be run in Edge when on Windows.
+     *
+     * Defaults to `true`.
+     */
+    edge?: boolean;
+
+    /**
+     * Indicates whether Internet Explorer is supported.  If `true`, then your tests will be run
+     * in Internet Explorer when on Windows.
+     *
+     * Defaults to `false`.
+     */
+    ie?: boolean;
+  };
+
+  /**
    * The relative path of the source directory.
    *
    * Defaults to "src".
