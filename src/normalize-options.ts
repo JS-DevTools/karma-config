@@ -5,13 +5,13 @@ import { Options } from "./options";
  * Normalized options with defaults applied.
  */
 export interface NormalizedOptions {
-  coverage: boolean;
   windows: boolean;
   mac: boolean;
   linux: boolean;
-  CI: boolean;
-  sourceDir: string;
   testDir: string;
+  sourceDir: string;
+  CI: boolean;
+  coverage: boolean;
   tests: Array<string | FilePattern>;
   serve: Array<string | FilePattern>;
   config: ConfigOptions;
@@ -22,28 +22,38 @@ export interface NormalizedOptions {
  */
 export function normalizeOptions(options?: Options): NormalizedOptions {
   options = options || {};
-  let coverage = options.coverage === undefined ? defaultCoverage() : Boolean(options.coverage);
-  let platform = options.platform === undefined ? defaultPlatform() : String(options.platform).toLowerCase();
-  let CI = options.CI === undefined ? defaultCI() : Boolean(options.CI);
-  let sourceDir = options.sourceDir === undefined ? "src" : String(options.sourceDir);
-  let testDir = options.testDir === undefined ? "test" : String(options.testDir);
 
+  let platform = normalizeOption(options.platform, defaultPlatform(), String).toLowerCase();
   let windows = /^win/.test(platform);
   let mac = /^darwin|^mac|^osx/.test(platform);
   let linux = !mac && !windows;
 
+  let testDir = normalizeOption(options.testDir, "test", String);
+
   return {
-    coverage,
     windows,
     mac,
     linux,
-    CI,
-    sourceDir,
     testDir,
+    sourceDir: normalizeOption(options.sourceDir, "src", String),
+    CI: normalizeOption(options.CI, defaultCI(), Boolean),
+    coverage: normalizeOption(options.coverage, defaultCoverage(), Boolean),
     tests: arrayify(options.tests) || [`${testDir}/**/*.+(spec|test).+(js|jsx)`],
     serve: arrayify(options.serve) || [`${testDir}/**/*`],
     config: Object.assign({}, options.config),
   };
+}
+
+/**
+ * Returns the given option as the appropriate type, or the default value.
+ */
+function normalizeOption<T>(option: T | undefined, defaultValue: T, type: (value: unknown) => T): T {
+  if (option === undefined) {
+    return defaultValue;
+  }
+  else {
+    return type(option);
+  }
 }
 
 /**
