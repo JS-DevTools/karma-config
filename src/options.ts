@@ -77,6 +77,15 @@ export interface Options {
   serve?: string | FilePattern | Array<string | FilePattern>;
 
   /**
+   * Indicates whether your source code should be transpiled to ES5 syntax to support older
+   * web browsers. If set to `true`, then Webpack will be configured to use Babel.
+   *
+   * Defaults to `false`.  If the `browsers.ie` option is enabled, then this option is also
+   * enabled, unless explicitly disabled.
+   */
+  transpile?: boolean;
+
+  /**
    * Indicates whether code coverage analysis should be performed.
    * If set to `true`, then Webpack will be configured to inject code-coverage instrumentation
    * and write code-coverage reports in the "coverage" directory.

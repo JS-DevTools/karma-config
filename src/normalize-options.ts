@@ -11,6 +11,7 @@ export interface NormalizedOptions {
   testDir: string;
   sourceDir: string;
   CI: boolean;
+  transpile: boolean;
   coverage: boolean;
   tests: Array<string | FilePattern>;
   serve: Array<string | FilePattern>;
@@ -37,6 +38,7 @@ export function normalizeOptions(options?: Options): NormalizedOptions {
   let linux = !mac && !windows;
 
   let testDir = normalizeOption(options.testDir, "test", String);
+  let ie = normalizeOption(options.browsers.ie, false, Boolean);
 
   return {
     windows,
@@ -45,6 +47,7 @@ export function normalizeOptions(options?: Options): NormalizedOptions {
     testDir,
     sourceDir: normalizeOption(options.sourceDir, "src", String),
     CI: normalizeOption(options.CI, defaultCI(), Boolean),
+    transpile: normalizeOption(options.transpile, ie, Boolean),
     coverage: normalizeOption(options.coverage, defaultCoverage(), Boolean),
     tests: arrayify(options.tests) || [`${testDir}/**/*.+(spec|test).+(js|jsx|mjs)`],
     serve: arrayify(options.serve) || [`${testDir}/**/*`],
@@ -54,7 +57,7 @@ export function normalizeOptions(options?: Options): NormalizedOptions {
       firefox: normalizeOption(options.browsers.firefox, true, Boolean),
       safari: normalizeOption(options.browsers.safari, true, Boolean),
       edge: normalizeOption(options.browsers.edge, true, Boolean),
-      ie: normalizeOption(options.browsers.ie, false, Boolean),
+      ie,
     },
   };
 }
