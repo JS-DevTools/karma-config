@@ -81,8 +81,8 @@ Depending on the operating system and whether its running in a CI/CD environment
 
   files: [
     // Assumes your tests are under the "test" folder and are named *.spec.js
-    // or *.test.js.  JSX files are also supported by default.
-    "test/**/*.+(spec|test).+(js|jsx)",
+    // or *.test.js.  (.mjs and .jsx file extensions are also supported)
+    "test/**/*.+(spec|test).+(js|jsx|mjs)",
 
     // Allows your tests to dynamically access any file in the "test" folder.
     // Useful for loading test data from CSV or JSON files.
@@ -91,7 +91,7 @@ Depending on the operating system and whether its running in a CI/CD environment
 
   preprocessors: {
     // Uses Webpack to bundle your tests and their dependencies
-    "test/**/*.+(spec|test).+(js|jsx)": ["webpack"]
+    "test/**/*.+(spec|test).+(js|jsx|mjs)": ["webpack"]
   },
 
   webpack: {
@@ -185,7 +185,7 @@ module.exports = require("karma-config")({
 |`browsers.ie`     |`boolean`         |`false`                  |Indicates whether Internet Explorer is supported. If `true`, then tests will be run in Internet Explorer when on Windows.
 |`sourceDir`       |`string`          |`src`                    |The relative path of the source directory.
 |`testDir`         |`string`          |`test`                   |The relative path of the test directory.
-|`tests`           |`string` `string[]` `object` `object[]`|`${testDir}/**/*.spec.js` `${testDir}/**/*.test.js` `${testDir}/**/*.spec.jsx` `${testDir}/**/*.test.jsx`|One or more [file patterns](https://karma-runner.github.io/3.0/config/files.html) that specify your test files. These are the files that will be bundled by Webpack and run by Karma.
+|`tests`           |`string` `string[]` `object` `object[]`|`${testDir}/**/*.spec.js` `${testDir}/**/*.test.js` `${testDir}/**/*.spec.jsx` `${testDir}/**/*.test.jsx` `${testDir}/**/*.spec.mjs` `${testDir}/**/*.test.mjs`|One or more [file patterns](https://karma-runner.github.io/3.0/config/files.html) that specify your test files. These are the files that will be bundled by Webpack and run by Karma.
 |`serve`           |`string` `string[]` `object` `object[]`|`${testDir}/**/*`|One or more [file patterns](https://karma-runner.github.io/3.0/config/files.html) that Karma will allow to be served. This is useful for loading test data from CSV or JSON files.
 |`coverage`        |`boolean`         |`false`                  |Indicates whether code coverage analysis should be performed. If set to `true`, then Webpack will be configured to inject code-coverage instrumentation and write code-coverage reports in the `./coverage/` directory.<br><br>This option can also be enabled by setting the `KARMA_COVERAGE` environment variable, or by using the `--coverage` command-line flag when running Karma.
 |`platform`        |`string`          |[`process.platform`](https://nodejs.org/api/process.html#process_process_platform) |The operating system platform (e.g. "linux", "win32", "darwin", etc.). This determines which browsers will be launched by Karma.<br><br>This option can also be set via the `KARMA_PLATFORM` environment variable.

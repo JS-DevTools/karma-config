@@ -7,7 +7,7 @@ import { mergeConfig } from "./util";
  */
 export function configureWebpack(config: ConfigOptions, { testDir }: NormalizedOptions): ConfigOptions {
   config.preprocessors = mergeConfig(config.preprocessors, {
-    [`${testDir}/**/*.+(spec|test).+(js|jsx)`]: ["webpack"],
+    [`${testDir}/**/*.+(spec|test).+(js|jsx|mjs)`]: ["webpack"],
   });
 
   config.webpack = mergeConfig(config.webpack, {

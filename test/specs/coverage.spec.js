@@ -30,7 +30,7 @@ describe("Code-coverage config", () => {
         module: {
           rules: [
             {
-              test: /\.jsx?$/,
+              test: /\.(js|jsx|mjs)$/,
               include: /src/,
               exclude: /node_modules|\.spec\.|\.test\./,
               enforce: "post",

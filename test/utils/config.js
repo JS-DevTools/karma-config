@@ -19,11 +19,11 @@ const defaultConfig = {
   browsers,
   frameworks: ["mocha", "host-environment"],
   files: [
-    "test/**/*.+(spec|test).+(js|jsx)",
+    "test/**/*.+(spec|test).+(js|jsx|mjs)",
     { pattern: "test/**/*", included: false, served: true }
   ],
   preprocessors: {
-    "test/**/*.+(spec|test).+(js|jsx)": ["webpack"]
+    "test/**/*.+(spec|test).+(js|jsx|mjs)": ["webpack"]
   },
   reporters: ["verbose"],
   webpack: {

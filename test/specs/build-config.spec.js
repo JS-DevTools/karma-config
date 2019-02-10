@@ -35,7 +35,7 @@ describe("buildConfig()", () => {
 
     expect(config).to.deep.equal(mergeConfig({
       files: [
-        "test/**/*.+(spec|test).+(js|jsx)",
+        "test/**/*.+(spec|test).+(js|jsx|mjs)",
         { pattern: "path/to/my/file.json", included: false, served: true }
       ],
     }));
@@ -51,7 +51,7 @@ describe("buildConfig()", () => {
 
     expect(config).to.deep.equal(mergeConfig({
       files: [
-        "test/**/*.+(spec|test).+(js|jsx)",
+        "test/**/*.+(spec|test).+(js|jsx|mjs)",
         { pattern: "path/to/some/**/*.files", included: false, served: true },
         { pattern: "more/**/*.files", served: true },
       ],

@@ -22,7 +22,7 @@ export function configureCoverage(config: ConfigOptions, { coverage, sourceDir }
 
   if (!hasWebpackLoader(config.webpack.module!.rules, "coverage-istanbul-loader")) {
     config.webpack.module!.rules.push({
-      test: /\.jsx?$/,
+      test: /\.(js|jsx|mjs)$/,
       include: new RegExp(sourceDir.replace(/\//g, "\/")),
       exclude: /node_modules|\.spec\.|\.test\./,
       enforce: "post",

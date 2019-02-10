@@ -46,7 +46,7 @@ export function normalizeOptions(options?: Options): NormalizedOptions {
     sourceDir: normalizeOption(options.sourceDir, "src", String),
     CI: normalizeOption(options.CI, defaultCI(), Boolean),
     coverage: normalizeOption(options.coverage, defaultCoverage(), Boolean),
-    tests: arrayify(options.tests) || [`${testDir}/**/*.+(spec|test).+(js|jsx)`],
+    tests: arrayify(options.tests) || [`${testDir}/**/*.+(spec|test).+(js|jsx|mjs)`],
     serve: arrayify(options.serve) || [`${testDir}/**/*`],
     config: Object.assign({}, options.config),
     browsers: {

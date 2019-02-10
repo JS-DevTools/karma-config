@@ -14,7 +14,7 @@ describe("webpack config", () => {
 
     expect(config).to.deep.equal(mergeConfig({
       preprocessors: {
-        "test/**/*.+(spec|test).+(js|jsx)": ["webpack"],
+        "test/**/*.+(spec|test).+(js|jsx|mjs)": ["webpack"],
       },
       webpack: {
         mode: "development",
