@@ -76,7 +76,7 @@ function configureSauceLabs(config: ConfigOptions, options: NormalizedOptions): 
 
   config = mergeConfig(config, {
     logLevel: "debug",
-    concurrency: 3,
+    // concurrency: 1,
     captureTimeout: 60000,
     browserDisconnectTolerance: 5,
     browserDisconnectTimeout: 60000,
