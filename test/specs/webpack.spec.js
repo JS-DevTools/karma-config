@@ -30,8 +30,13 @@ describe("webpack config", () => {
       }
     });
 
+    let expectedBrowsers = defaultBrowsers.slice();
+    if (process.platform === "win32") {
+      expectedBrowsers.push("IE");
+    }
+
     expect(config).to.deep.equal(mergeConfig({
-      browsers: defaultBrowsers.concat("IE"),
+      browsers: expectedBrowsers,
       webpack: {
         mode: "development",
         devtool: "inline-source-map",
