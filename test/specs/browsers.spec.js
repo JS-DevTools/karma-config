@@ -175,6 +175,23 @@ describe("Browser config", () => {
           platform: "Windows 10",
           browserName: "internet explorer",
         },
+      },
+      webpack: {
+        mode: "development",
+        devtool: "inline-source-map",
+        module: {
+          rules: [
+            {
+              test: /\.(js|jsx|mjs)$/,
+              use: {
+                loader: "babel-loader",
+                options: {
+                  presets: ["@babel/preset-env"]
+                }
+              }
+            }
+          ]
+        }
       }
     }));
   });

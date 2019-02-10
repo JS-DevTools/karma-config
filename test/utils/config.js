@@ -4,19 +4,19 @@
  * @typedef {import("karma").ConfigOptions} ConfigOptions
  */
 
-let browsers = ["Chrome", "Firefox"];
+let defaultBrowsers = ["Chrome", "Firefox"];
 
 switch (process.platform) {
   case "win32":
-    browsers.push("Edge");
+    defaultBrowsers.push("Edge");
     break;
   case "darwin":
-    browsers.push("Safari");
+    defaultBrowsers.push("Safari");
     break;
 }
 
 const defaultConfig = {
-  browsers,
+  browsers: defaultBrowsers,
   frameworks: ["mocha", "host-environment"],
   files: [
     "test/**/*.+(spec|test).+(js|jsx|mjs)",
@@ -45,4 +45,4 @@ function mergeConfig (config) {
   return Object.assign({}, defaultConfig, config);
 }
 
-module.exports = { defaultConfig, mergeConfig };
+module.exports = { defaultBrowsers, defaultConfig, mergeConfig };

@@ -2,7 +2,7 @@
 
 const { buildConfig } = require("../../");
 const { expect } = require("chai");
-const { mergeConfig } = require("../utils/config");
+const { defaultBrowsers, mergeConfig } = require("../utils/config");
 const envVars = require("../utils/env-vars");
 
 describe("webpack config", () => {
@@ -13,14 +13,64 @@ describe("webpack config", () => {
     let config = buildConfig();
 
     expect(config).to.deep.equal(mergeConfig({
-      preprocessors: {
-        "test/**/*.+(spec|test).+(js|jsx|mjs)": ["webpack"],
-      },
       webpack: {
         mode: "development",
         devtool: "inline-source-map",
         module: {
           rules: [],
+        }
+      }
+    }));
+  });
+
+  it("should configure webpack and babel by default if IE is supported", () => {
+    let config = buildConfig({
+      browsers: {
+        ie: true
+      }
+    });
+
+    expect(config).to.deep.equal(mergeConfig({
+      browsers: defaultBrowsers.concat("IE"),
+      webpack: {
+        mode: "development",
+        devtool: "inline-source-map",
+        module: {
+          rules: [
+            {
+              test: /\.(js|jsx|mjs)$/,
+              use: {
+                loader: "babel-loader",
+                options: {
+                  presets: ["@babel/preset-env"]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }));
+  });
+
+  it("should configure webpack and babel if the transiple option is set", () => {
+    let config = buildConfig({ transpile: true });
+
+    expect(config).to.deep.equal(mergeConfig({
+      webpack: {
+        mode: "development",
+        devtool: "inline-source-map",
+        module: {
+          rules: [
+            {
+              test: /\.(js|jsx|mjs)$/,
+              use: {
+                loader: "babel-loader",
+                options: {
+                  presets: ["@babel/preset-env"]
+                }
+              }
+            }
+          ]
         }
       }
     }));
@@ -72,6 +122,33 @@ describe("webpack config", () => {
           rules: [
             { some: "rule" }
           ],
+        }
+      }
+    }));
+  });
+
+  it("should not override user-specified babel-loader settings", () => {
+    let config = buildConfig({
+      transpile: true,
+      config: {
+        webpack: {
+          module: {
+            rules: [
+              { test: /\.js$/, use: "babel-loader" }
+            ]
+          }
+        },
+      }
+    });
+
+    expect(config).to.deep.equal(mergeConfig({
+      webpack: {
+        mode: "development",
+        devtool: "inline-source-map",
+        module: {
+          rules: [
+            { test: /\.js$/, use: "babel-loader" }
+          ]
         }
       }
     }));
