@@ -1,7 +1,8 @@
 import { ConfigOptions, FilePattern } from "karma";
-import { RuleSetRule, RuleSetUseItem } from "webpack";
 import { configureBrowsers } from "./configure-browsers";
-import { NormalizedOptions, normalizeOptions } from "./normalize-options";
+import { configureCoverage } from "./configure-coverage";
+import { configureWebpack } from "./configure-webpack";
+import { normalizeOptions } from "./normalize-options";
 import { Options } from "./options";
 import { mergeConfig } from "./util";
 
@@ -25,57 +26,6 @@ export function buildConfig(options?: Options): ConfigOptions {
 }
 
 /**
- * Configures Webpack to bundle test files and their dependencies.
- */
-function configureWebpack(config: ConfigOptions, { testDir }: NormalizedOptions): ConfigOptions {
-  config.preprocessors = mergeConfig(config.preprocessors, {
-    [`${testDir}/**/*.+(spec|test).+(js|jsx)`]: ["webpack"],
-  });
-
-  config.webpack = mergeConfig(config.webpack, {
-    mode: "development",
-    devtool: "inline-source-map",
-  });
-
-  config.webpack.module = mergeConfig(config.webpack.module, {
-    rules: [],
-  });
-
-  return config;
-}
-
-/**
- * Configures Karma and Webpack to gather code-coverage data.
- */
-function configureCoverage(config: ConfigOptions, { coverage, sourceDir }: NormalizedOptions): ConfigOptions {
-  if (!coverage) {
-    return config;
-  }
-
-  if (!config.reporters!.includes("coverage-istanbul")) {
-    config.reporters!.push("coverage-istanbul");
-  }
-
-  config.coverageIstanbulReporter = mergeConfig(config.coverageIstanbulReporter, {
-    dir: "coverage/%browser%",
-    reports: ["text-summary", "lcov"],
-    skipFilesWithNoCoverage: true,
-  });
-
-  if (!hasWebpackLoader(config.webpack.module!.rules, "coverage-istanbul-loader")) {
-    config.webpack.module!.rules.push({
-      test: /\.jsx?$/,
-      include: new RegExp(sourceDir.replace(/\//g, "\/")),
-      exclude: /node_modules|\.spec\.|\.test\./,
-      enforce: "post",
-      use: "coverage-istanbul-loader",
-    });
-  }
-
-  return config;
-}
-
-/**
  * Returns a FilePattern that serves the specified file, but does not include it by default.
  */
 function serveFile(file: string | FilePattern): FilePattern {
@@ -85,39 +35,5 @@ function serveFile(file: string | FilePattern): FilePattern {
   else {
     file.served = true;
     return file;
-  }
-}
-
-/**
- * Determines whether the specified Webpack loader already exists in the rules list.
- */
-function hasWebpackLoader(rules: RuleSetRule[], name: string): boolean {
-  for (let rule of rules) {
-    if (rule && rule.use) {
-      if (Array.isArray(rule.use)) {
-        for (let loader of rule.use) {
-          if (webpackLoaderName(loader) === name) {
-            return true;
-          }
-        }
-      }
-      else if (webpackLoaderName(rule.use as RuleSetUseItem) === name) {
-        return true;
-      }
-    }
-  }
-
-  return false;
-}
-
-/**
- * Returns the name of the given Webpack loader, if possible.
- */
-function webpackLoaderName(loader: RuleSetUseItem): string | undefined {
-  if (typeof loader === "string") {
-    return loader;
-  }
-  else if (typeof loader === "object") {
-    return loader.loader;
   }
 }

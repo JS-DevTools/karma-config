@@ -1,3 +1,5 @@
+import { RuleSetRule, RuleSetUseItem } from "webpack";
+
 type POJO = Record<string, unknown>;
 
 /**
@@ -15,4 +17,38 @@ export function mergeConfig<T extends POJO>(target: T | undefined, defaults: Par
   }
 
   return config;
+}
+
+/**
+ * Determines whether the specified Webpack loader already exists in the rules list.
+ */
+export function hasWebpackLoader(rules: RuleSetRule[], name: string): boolean {
+  for (let rule of rules) {
+    if (rule && rule.use) {
+      if (Array.isArray(rule.use)) {
+        for (let loader of rule.use) {
+          if (webpackLoaderName(loader) === name) {
+            return true;
+          }
+        }
+      }
+      else if (webpackLoaderName(rule.use as RuleSetUseItem) === name) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Returns the name of the given Webpack loader, if possible.
+ */
+export function webpackLoaderName(loader: RuleSetUseItem): string | undefined {
+  if (typeof loader === "string") {
+    return loader;
+  }
+  else if (typeof loader === "object") {
+    return loader.loader;
+  }
 }
