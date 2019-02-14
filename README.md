@@ -74,7 +74,7 @@ Depending on the operating system and whether its running in a CI/CD environment
     "mocha",
 
     // This makes it easy to detect which browser your tests are running in.
-    // Also provides access to environment variable.
+    // Also provides access to environment variables.
     // See https://jsdevtools.org/karma-host-environment
     "host-environment"
   ],
