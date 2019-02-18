@@ -47,7 +47,7 @@ export function normalizeOptions(options?: Options): NormalizedOptions {
     testDir,
     sourceDir: normalizeOption(options.sourceDir, "src", String),
     CI: normalizeOption(options.CI, defaultCI(), Boolean),
-    transpile: normalizeOption(options.transpile, ie, Boolean),
+    transpile: normalizeOption(options.transpile, windows && ie, Boolean),
     coverage: normalizeOption(options.coverage, defaultCoverage(), Boolean),
     tests: arrayify(options.tests) || [`${testDir}/**/*.+(spec|test).+(js|jsx|mjs)`],
     serve: arrayify(options.serve) || [`${testDir}/**/*`],

@@ -80,8 +80,9 @@ export interface Options {
    * Indicates whether your source code should be transpiled to ES5 syntax to support older
    * web browsers. If set to `true`, then Webpack will be configured to use Babel.
    *
-   * Defaults to `false`.  If the `browsers.ie` option is enabled, then this option is also
-   * enabled, unless explicitly disabled.
+   * If `browsers.ie` is enabled, then this option defaults to `true` when running on Windows.
+   *
+   * Defaults to `false`.
    */
   transpile?: boolean;
 

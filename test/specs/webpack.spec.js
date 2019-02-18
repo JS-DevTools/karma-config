@@ -23,8 +23,27 @@ describe("webpack config", () => {
     }));
   });
 
-  it("should configure webpack and babel by default if IE is supported", () => {
+  it("should not use babel by default on non-Windows platforms, even if IE is supported", () => {
     let config = buildConfig({
+      platform: "MacOS",
+      browsers: {
+        ie: true
+      }
+    });
+
+    let expectedBrowsers = defaultBrowsers.slice();
+    if (process.platform === "win32") {
+      expectedBrowsers.push("IE");
+    }
+
+    expect(config).to.deep.equal(mergeConfig({
+      browsers: ["Chrome", "Firefox", "Safari"],
+    }));
+  });
+
+  it("should configure webpack and babel by default if running on Windows with IE enabled", () => {
+    let config = buildConfig({
+      platform: "windows",
       browsers: {
         ie: true
       }
