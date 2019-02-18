@@ -55,7 +55,7 @@ describe("webpack config", () => {
     }
 
     expect(config).to.deep.equal(mergeConfig({
-      browsers: expectedBrowsers,
+      browsers: ["Chrome", "Firefox", "Edge", "IE"],
       webpack: {
         mode: "development",
         devtool: "inline-source-map",
