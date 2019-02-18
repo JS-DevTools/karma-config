@@ -1,37 +1,35 @@
 "use strict";
 
-const karmaConfig = require("../../");
+const commonJSExport = require("../../");
+const { default: defaultExport, karmaConfig: namedExport, buildConfig } = require("../../");
 const { expect } = require("chai");
 
 describe("package exports", () => {
 
   it("should export the karmaConfig function the default CommonJS export", () => {
-    expect(karmaConfig).to.be.a("function");
-    expect(karmaConfig.name).to.equal("karmaConfig");
-    expect(karmaConfig.length).to.equal(1);
+    expect(commonJSExport).to.be.a("function");
+    expect(commonJSExport.name).to.equal("karmaConfig");
+    expect(commonJSExport.length).to.equal(1);
   });
 
   it("should export the karmaConfig function as the default ESM export", () => {
-    expect(karmaConfig).to.have.property("default");
-    expect(karmaConfig.default).to.be.a("function");
-    expect(karmaConfig.default).to.equal(karmaConfig);
+    expect(defaultExport).to.be.a("function");
+    expect(defaultExport).to.equal(commonJSExport);
   });
 
   it("should export the karmaConfig function as a named ESM export", () => {
-    expect(karmaConfig).to.have.property("karmaConfig");
-    expect(karmaConfig.karmaConfig).to.be.a("function");
-    expect(karmaConfig.karmaConfig).to.equal(karmaConfig);
+    expect(namedExport).to.be.a("function");
+    expect(namedExport).to.equal(defaultExport);
   });
 
   it("should export the buildConfig function", () => {
-    expect(karmaConfig).to.have.property("buildConfig");
-    expect(karmaConfig.buildConfig).to.be.a("function");
-    expect(karmaConfig.buildConfig.name).to.equal("buildConfig");
-    expect(karmaConfig.buildConfig.length).to.equal(1);
+    expect(buildConfig).to.be.a("function");
+    expect(buildConfig.name).to.equal("buildConfig");
+    expect(buildConfig.length).to.equal(1);
   });
 
   it("should not export anything else", () => {
-    expect(karmaConfig).to.have.keys([
+    expect(commonJSExport).to.have.keys([
       "default",
       "buildConfig",
       "karmaConfig",
