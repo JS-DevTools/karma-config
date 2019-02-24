@@ -58,4 +58,34 @@ describe("buildConfig()", () => {
     }));
   });
 
+  it("should load test fixtures before tests", () => {
+    let config = buildConfig({ fixtures: "path/to/my/test/fixtures.js" });
+
+    expect(config).to.deep.equal(mergeConfig({
+      files: [
+        "path/to/my/test/fixtures.js",
+        "test/**/*.+(spec|test).+(js|jsx|mjs)",
+        { pattern: "test/**/*", included: false, served: true },
+      ],
+    }));
+  });
+
+  it("should load multiple test fixtures before tests", () => {
+    let config = buildConfig({
+      fixtures: [
+        "path/to/my/test/fixtures.js",
+        { pattern: "more/test/fixtures.mjs" },
+      ]
+    });
+
+    expect(config).to.deep.equal(mergeConfig({
+      files: [
+        "path/to/my/test/fixtures.js",
+        { pattern: "more/test/fixtures.mjs" },
+        "test/**/*.+(spec|test).+(js|jsx|mjs)",
+        { pattern: "test/**/*", included: false, served: true },
+      ],
+    }));
+  });
+
 });
