@@ -1,14 +1,19 @@
-import { ConfigOptions } from "karma";
+import { ConfigOptions, FilePattern } from "karma";
 import { NormalizedOptions } from "./normalize-options";
 import { hasWebpackLoader, mergeConfig } from "./util";
 
 /**
  * Configures Webpack to bundle test files and their dependencies.
  */
-export function configureWebpack(config: ConfigOptions, { testDir, transpile }: NormalizedOptions): ConfigOptions {
-  config.preprocessors = mergeConfig(config.preprocessors, {
-    [`${testDir}/**/*.+(spec|test).+(js|jsx|mjs)`]: ["webpack"],
-  });
+export function configureWebpack(config: ConfigOptions, options: NormalizedOptions): ConfigOptions {
+  let { transpile } = options;
+  let globs = getEntryFileGlobs(options);
+
+  for (let glob of globs) {
+    config.preprocessors = mergeConfig(config.preprocessors, {
+      [glob]: ["webpack"],
+    });
+  }
 
   config.webpack = mergeConfig(config.webpack, {
     mode: "development",
@@ -32,4 +37,24 @@ export function configureWebpack(config: ConfigOptions, { testDir, transpile }: 
   }
 
   return config;
+}
+
+/**
+ * Returns the glob patterns of all entry files (tests and fixtures).
+ */
+function getEntryFileGlobs({ fixtures, tests }: NormalizedOptions): string[] {
+  let globs = [];
+
+  for (let patterns of [fixtures, tests]) {
+    for (let pattern of patterns) {
+      if (typeof pattern === "string") {
+        globs.push(pattern);
+      }
+      else if (pattern.included !== false) {
+        globs.push(pattern.pattern);
+      }
+    }
+  }
+
+  return globs;
 }

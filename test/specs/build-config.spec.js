@@ -67,6 +67,10 @@ describe("buildConfig()", () => {
         "test/**/*.+(spec|test).+(js|jsx|mjs)",
         { pattern: "test/**/*", included: false, served: true },
       ],
+      preprocessors: {
+        "path/to/my/test/fixtures.js": ["webpack"],
+        "test/**/*.+(spec|test).+(js|jsx|mjs)": ["webpack"],
+      },
     }));
   });
 
@@ -75,6 +79,7 @@ describe("buildConfig()", () => {
       fixtures: [
         "path/to/my/test/fixtures.js",
         { pattern: "more/test/fixtures.mjs" },
+        { pattern: "more/test/fixtures.mjs", included: false, served: true },
       ]
     });
 
@@ -82,9 +87,15 @@ describe("buildConfig()", () => {
       files: [
         "path/to/my/test/fixtures.js",
         { pattern: "more/test/fixtures.mjs" },
+        { pattern: "more/test/fixtures.mjs", included: false, served: true },
         "test/**/*.+(spec|test).+(js|jsx|mjs)",
         { pattern: "test/**/*", included: false, served: true },
       ],
+      preprocessors: {
+        "more/test/fixtures.mjs": ["webpack"],
+        "path/to/my/test/fixtures.js": ["webpack"],
+        "test/**/*.+(spec|test).+(js|jsx|mjs)": ["webpack"],
+      },
     }));
   });
 
