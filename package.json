@@ -33,12 +33,12 @@
     "lint": "npm run lint:typescript && npm run lint:javascript",
     "lint:typescript": "tslint -p tsconfig.json",
     "lint:javascript": "eslint test",
-    "build": "npm run clean && tsc",
+    "build": "tsc",
     "test": "mocha && npm run lint",
     "coverage": "nyc --reporter=text --reporter=lcov mocha",
     "upgrade": "npm-check -u",
     "bump": "bump --prompt --tag --push --all",
-    "release": "npm run upgrade && npm run build && npm test && npm run bump"
+    "release": "npm run upgrade && npm run clean && npm run build && npm test && npm run bump"
   },
   "dependencies": {
     "@babel/core": "^7.3.3",
