@@ -69,6 +69,15 @@ export interface Options {
   tests?: string | FilePattern | Array<string | FilePattern>;
 
   /**
+   * One or more file patterns that specify your test fixtures. Test fixtures will be run _before_
+   * any of your test files are loaded, which gives you an opportunity to setup the runtime environment,
+   * load polyfills, etc.
+   *
+   * This option has no default value.
+   */
+  fixtures?: string | FilePattern | Array<string | FilePattern>;
+
+  /**
    * One or more file patterns that Karma will allow to be served. This allows your tests to
    * dynamically load data, such as JSON files, CSV files, etc.
    *

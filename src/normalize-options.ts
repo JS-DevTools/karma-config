@@ -14,6 +14,7 @@ export interface NormalizedOptions {
   transpile: boolean;
   coverage: boolean;
   tests: Array<string | FilePattern>;
+  fixtures: Array<string | FilePattern>;
   serve: Array<string | FilePattern>;
   config: ConfigOptions;
   browsers: {
@@ -50,6 +51,7 @@ export function normalizeOptions(options?: Options): NormalizedOptions {
     transpile: normalizeOption(options.transpile, windows && ie, Boolean),
     coverage: normalizeOption(options.coverage, defaultCoverage(), Boolean),
     tests: arrayify(options.tests) || [`${testDir}/**/*.+(spec|test).+(js|jsx|mjs)`],
+    fixtures: arrayify(options.fixtures) || [],
     serve: arrayify(options.serve) || [`${testDir}/**/*`],
     config: Object.assign({}, options.config),
     browsers: {

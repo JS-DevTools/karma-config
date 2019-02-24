@@ -15,7 +15,7 @@ export function buildConfig(options?: Options): ConfigOptions {
   let config = mergeConfig(opts.config, {
     frameworks: ["mocha", "host-environment"],
     reporters: ["verbose"],
-    files: opts.tests.concat(opts.serve.map(serveFile)),
+    files: opts.fixtures.concat(opts.tests, opts.serve.map(serveFile)),
   });
 
   config = configureWebpack(config, opts);
