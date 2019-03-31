@@ -86,7 +86,7 @@ function configureSauceLabs(config: ConfigOptions, options: NormalizedOptions): 
   config.sauceLabs = mergeConfig(config.sauceLabs, {
     build: `${pkg.name} v${pkg.version} Build #${buildNumber}`,
     testName: `${pkg.name} v${pkg.version}`,
-    tags: [pkg.name!],
+    tags: [pkg.name],
   });
 
   config.customLaunchers = config.customLaunchers || {};

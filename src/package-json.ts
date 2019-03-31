@@ -1,13 +1,13 @@
 import { readFileSync } from "fs";
-import ono from "ono";
-import { PackageJson } from "package-json"; // tslint:disable-line: no-implicit-dependencies
+import ono from "ono";  // tslint:disable-line: match-default-export-name
+import { FullVersion } from "package-json";
 
-let pkg: PackageJson | undefined;
+let pkg: FullVersion | undefined;
 
 /**
  * Reads the host project's package.json file and returns its parsed contents.
  */
-export function readPackageJson(): PackageJson {
+export function readPackageJson(): FullVersion {
   if (pkg) {
     return pkg;
   }
@@ -22,7 +22,7 @@ export function readPackageJson(): PackageJson {
   }
 
   try {
-    pkg = JSON.parse(json) as PackageJson;
+    pkg = JSON.parse(json) as FullVersion;
     return pkg;
   }
   catch (error) {
