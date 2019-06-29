@@ -1,6 +1,7 @@
 import { RuleSetRule, RuleSetUseItem } from "webpack";
 
-type POJO = Record<string, unknown>;
+// tslint:disable-next-line: no-any
+type POJO = Record<string, any>;
 
 /**
  * Does a shallow merge of two objects, only overriding values that are `undefined`.
@@ -12,7 +13,8 @@ export function mergeConfig<T extends POJO>(target: T | undefined, defaults: Par
     let defaultValue = defaults[key];
 
     if (config[key] === undefined) {
-      config[key] = defaultValue;
+      // tslint:disable-next-line: no-any
+      (config as any)[key] = defaultValue;
     }
   }
 
