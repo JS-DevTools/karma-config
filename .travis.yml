@@ -23,7 +23,8 @@ before_script:
 script:
   - where node
   - where npm
-  - echo %PATH%
+  - $Env:Path
+  - node -e "console.log(require('which').sync('node'));"
   - npm run coverage
 
 # after_success:
