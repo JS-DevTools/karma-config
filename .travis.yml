@@ -23,8 +23,9 @@ before_script:
 script:
   - where node
   - where npm
-  - $Env:Path
+  - node -e "console.log(process.env.PATH);"
   - node -e "console.log(require('which').sync('node'));"
+  - npm run debugging_ci
   - npm run coverage
 
 # after_success:
