@@ -7,13 +7,13 @@ filter_secrets: false
 language: node_js
 
 node_js:
-  - 8
-  - 10
+  # - 8
+  # - 10
   - 12
 
 os:
-  - linux
-  - osx
+  # - linux
+  # - osx
   - windows
 
 before_script:
@@ -21,6 +21,9 @@ before_script:
   - npm run build
 
 script:
+  - where node
+  - where npm
+  - echo %PATH%
   - npm run coverage
 
 after_success:
