@@ -29,9 +29,6 @@
     "lib"
   ],
   "scripts": {
-
-    "debugging_ci": "node -e \"console.log(require('which').sync('node'));\"",
-
     "clean": "shx rm -rf .nyc_output coverage lib",
     "lint": "npm run lint:typescript && npm run lint:javascript",
     "lint:typescript": "tslint -p tsconfig.json",

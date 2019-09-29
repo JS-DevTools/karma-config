@@ -7,13 +7,13 @@ filter_secrets: false
 language: node_js
 
 node_js:
-  # - 8
-  # - 10
-  - 12.10
+  - 8
+  - 10
+  - 12.10     # HACK: Nyc + Mocha fails on Node 12.11 on Windows. Awaiting a fix
 
 os:
-  # - linux
-  # - osx
+  - linux
+  - osx
   - windows
 
 before_script:
@@ -21,27 +21,22 @@ before_script:
   - npm run build
 
 script:
-  - where node
-  - where npm
-  - node -e "console.log(process.env.PATH);"
-  - node -e "console.log(require('which').sync('node'));"
-  - npm run debugging_ci
   - npm run coverage
 
-# after_success:
-#   - cat ./coverage/lcov.info | coveralls
+after_success:
+  - cat ./coverage/lcov.info | coveralls
 
-# jobs:
-#   include:
-#     - stage: Deploy
-#       name: Publish to npm
-#       script: true
-#       after_success: true
-#       deploy:
-#         provider: npm
-#         email: $NPM_EMAIL
-#         api_key: $NPM_API_KEY
-#         skip_cleanup: true
-#         on:
-#           tags: true
-#           branch: master
+jobs:
+  include:
+    - stage: Deploy
+      name: Publish to npm
+      script: true
+      after_success: true
+      deploy:
+        provider: npm
+        email: $NPM_EMAIL
+        api_key: $NPM_API_KEY
+        skip_cleanup: true
+        on:
+          tags: true
+          branch: master
