@@ -1,6 +1,6 @@
 {
   "name": "karma-config",
-  "version": "1.5.7",
+  "version": "1.5.8",
   "description": "Karma configuration builder with sensible defaults to minimize boilerplate",
   "keywords": [
     "karma",
