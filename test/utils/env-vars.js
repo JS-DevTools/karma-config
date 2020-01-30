@@ -1,6 +1,8 @@
 "use strict";
 
-let env;
+const ci = require("@qawolf/ci-info");
+
+let env, isCI;
 
 let envDefaults = {
   KARMA_COVERAGE: "",
@@ -28,6 +30,7 @@ function overrideEnvironmentVariables () {
   }
 
   env = {};
+  isCI = ci.isCI;
 
   for (let key of Object.keys(envDefaults)) {
     let value = process.env[key];
@@ -36,6 +39,8 @@ function overrideEnvironmentVariables () {
       process.env[key] = envDefaults[key];
     }
   }
+
+  ci.isCI = false;
 }
 
 /**
@@ -49,4 +54,5 @@ function restoreEnvironmentVariables () {
   }
 
   env = null;
+  ci.isCI = isCI;
 }
