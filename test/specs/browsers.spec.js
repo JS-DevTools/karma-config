@@ -106,9 +106,9 @@ describe("Browser config", () => {
       browserDisconnectTimeout: 60000,
       browserNoActivityTimeout: 60000,
       sauceLabs: {
-        build: `karma-config v${pkg.version} Build #1.23`,
-        testName: `karma-config v${pkg.version}`,
-        tags: ["karma-config"],
+        build: `@jsdevtools/karma-config v${pkg.version} Build #1.23`,
+        testName: `@jsdevtools/karma-config v${pkg.version}`,
+        tags: ["@jsdevtools/karma-config"],
       },
       customLaunchers: {
         /* eslint-disable camelcase */
@@ -154,9 +154,9 @@ describe("Browser config", () => {
       browserDisconnectTimeout: 60000,
       browserNoActivityTimeout: 60000,
       sauceLabs: {
-        build: `karma-config v${pkg.version} Build #1.23`,
-        testName: `karma-config v${pkg.version}`,
-        tags: ["karma-config"],
+        build: `@jsdevtools/karma-config v${pkg.version} Build #1.23`,
+        testName: `@jsdevtools/karma-config v${pkg.version}`,
+        tags: ["@jsdevtools/karma-config"],
       },
       customLaunchers: {
         /* eslint-disable camelcase */
