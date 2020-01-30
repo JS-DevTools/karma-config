@@ -10,6 +10,7 @@ let envDefaults = {
   CI_BUILD_NUMBER: "",
   SAUCE_USERNAME: "",
   SAUCE_ACCESS_KEY: "",
+  GITHUB_ACTIONS: "",
 };
 
 module.exports = {
