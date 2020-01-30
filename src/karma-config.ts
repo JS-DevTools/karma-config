@@ -1,6 +1,6 @@
 // tslint:disable: no-console
 import { Config } from "karma";
-import nodeUtil from "util";
+import * as nodeUtil from "util";
 import { buildConfig } from "./build-config";
 import { Options } from "./options";
 
