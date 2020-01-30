@@ -3,8 +3,8 @@ Karma Config
 
 ### Karma configuration builder with sensible defaults to minimize boilerplate
 
-[![Cross-Platform Compatibility](https://jstools.dev/img/badges/os-badges.svg)](https://travis-ci.com/JS-DevTools/karma-config)
-[![Build Status](https://api.travis-ci.com/JS-DevTools/karma-config.svg?branch=master)](https://travis-ci.com/JS-DevTools/karma-config)
+[![Cross-Platform Compatibility](https://jstools.dev/img/badges/os-badges.svg)](https://github.com/JS-DevTools/karma-config/blob/master/.github/workflows/CI-CD.yaml)
+[![Build Status](https://github.com/JS-DevTools/karma-config/workflows/CI-CD/badge.svg)](https://github.com/JS-DevTools/karma-config/blob/master/.github/workflows/CI-CD.yaml)
 
 [![Coverage Status](https://coveralls.io/repos/github/JS-DevTools/karma-config/badge.svg?branch=master)](https://coveralls.io/github/JS-DevTools/karma-config?branch=master)
 [![Dependencies](https://david-dm.org/JS-DevTools/karma-config.svg)](https://david-dm.org/JS-DevTools/karma-config)
