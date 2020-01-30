@@ -44,6 +44,7 @@
   "dependencies": {
     "@babel/core": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
+    "@qawolf/ci-info": "^2.1.0",
     "babel-loader": "^8.0.6",
     "coverage-istanbul-loader": "^2.0.3",
     "karma-chrome-launcher": "^3.1.0",

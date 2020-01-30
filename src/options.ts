@@ -126,7 +126,9 @@ export interface Options {
    * This option can also be enabled by setting the `CI` or `KARMA_CI` environment variables.
    * Most CI/CD servers automatically set the `CI` environment variable.
    *
-   * Defaults to `false`.
+   * By default, Karma Config will auto-detect most CI environments.
+   *
+   * @see https://www.npmjs.com/package/@qawolf/ci-info#supported-ci-tools
    */
   CI?: boolean;
 
