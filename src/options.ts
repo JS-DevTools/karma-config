@@ -111,8 +111,6 @@ export interface Options {
    * The operating system platform (e.g. "linux", "win32", "darwin", etc.).
    * This determines which browsers will be launched by Karma.
    *
-   * This option can also be set via the `KARMA_PLATFORM` environment variable.
-   *
    * Defaults to `process.platform`.
    *
    * @see https://nodejs.org/api/process.html#process_process_platform

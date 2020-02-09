@@ -34,7 +34,7 @@ export function normalizeOptions(options?: Options): NormalizedOptions {
   options = options || {};
   options.browsers = options.browsers || {};
 
-  let platform = normalizeOption(options.platform, defaultPlatform(), String).toLowerCase();
+  let platform = normalizeOption(options.platform, process.platform, String).toLowerCase();
   let windows = /^win/.test(platform);
   let mac = /^darwin|^mac|^osx/.test(platform);
   let linux = !mac && !windows;
@@ -85,14 +85,6 @@ function defaultCoverage(): boolean {
   let cliFlag = process.argv.includes("--coverage");
 
   return cliFlag || envVar;
-}
-
-/**
- * Returns the default value for the `platform` option, possibly from an environment variable.
- */
-function defaultPlatform(): string {
-  let envVar = environmentVariable("KARMA_PLATFORM");
-  return envVar || process.platform;
 }
 
 /**

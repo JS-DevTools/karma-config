@@ -6,7 +6,6 @@ let env, isCI;
 
 let envDefaults = {
   KARMA_COVERAGE: "",
-  KARMA_PLATFORM: "",
   KARMA_CI: "",
   CI: "",
   CI_BUILD_NUMBER: "",
