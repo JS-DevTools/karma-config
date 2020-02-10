@@ -97,29 +97,29 @@ function configureSauceLabs(config: ConfigOptions, options: NormalizedOptions): 
 
   if (safari) {
     browsers.push("Safari_SauceLabs");
-    config.customLaunchers.Safari_SauceLabs = {
+    config.customLaunchers.Safari_SauceLabs = mergeConfig(config.customLaunchers.Safari_SauceLabs, {
       base: "SauceLabs",
       platform: "MacOS 10.15",  // Catalina
       browserName: "safari",
-    };
+    });
   }
 
   if (edge) {
     browsers.push("Edge_SauceLabs");
-    config.customLaunchers.Edge_SauceLabs = {
+    config.customLaunchers.Edge_SauceLabs = mergeConfig(config.customLaunchers.Edge_SauceLabs, {
       base: "SauceLabs",
       platform: "Windows 10",
       browserName: "microsoftedge",
-    };
+    });
   }
 
   if (ie) {
     browsers.push("IE_SauceLabs");
-    config.customLaunchers.IE_SauceLabs = {
+    config.customLaunchers.IE_SauceLabs = mergeConfig(config.customLaunchers.IE_SauceLabs, {
       base: "SauceLabs",
       platform: "Windows 10",
       browserName: "internet explorer"
-    };
+    });
   }
 
   return config;

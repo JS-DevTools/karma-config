@@ -20,6 +20,85 @@ describe("Browser config", () => {
     expect(config.browsers).to.deep.equal(["Opera"]);
   });
 
+  it("should not override SauceLabs options that are specified by the user", () => {
+    process.env.SAUCE_USERNAME = "my-username";
+    process.env.SAUCE_ACCESS_KEY = "my-access-key";
+    process.env.CI_BUILD_NUMBER = "1.23";
+
+    let config = buildConfig({
+      platform: "linux",
+      browsers: {
+        safari: true,
+        edge: true,
+        ie: true,
+      },
+      config: {
+        captureTimeout: 999,
+        browserDisconnectTolerance: 999,
+        sauceLabs: {
+          tags: ["tag1", "tag2"],
+        },
+        customLaunchers: {
+          // eslint-disable-next-line camelcase
+          IE_SauceLabs: {
+            version: "7"
+          }
+        }
+      }
+    });
+
+    expect(config).to.deep.equal(mergeConfig({
+      reporters: ["verbose", "saucelabs"],
+      browsers: ["Chrome", "Firefox", "Safari_SauceLabs", "Edge_SauceLabs", "IE_SauceLabs"],
+      logLevel: "debug",
+      captureTimeout: 999,
+      browserDisconnectTolerance: 999,
+      browserDisconnectTimeout: 60000,
+      browserNoActivityTimeout: 60000,
+      sauceLabs: {
+        build: `@jsdevtools/karma-config v${pkg.version} Build #1.23`,
+        testName: `@jsdevtools/karma-config v${pkg.version}`,
+        tags: ["tag1", "tag2"],
+      },
+      customLaunchers: {
+        /* eslint-disable camelcase */
+        Safari_SauceLabs: {
+          base: "SauceLabs",
+          platform: "MacOS 10.15",
+          browserName: "safari",
+        },
+        Edge_SauceLabs: {
+          base: "SauceLabs",
+          platform: "Windows 10",
+          browserName: "microsoftedge",
+        },
+        IE_SauceLabs: {
+          base: "SauceLabs",
+          platform: "Windows 10",
+          browserName: "internet explorer",
+          version: "7"
+        },
+      },
+      webpack: {
+        mode: "development",
+        devtool: "inline-source-map",
+        module: {
+          rules: [
+            {
+              test: /\.(js|jsx|mjs)$/,
+              use: {
+                loader: "babel-loader",
+                options: {
+                  presets: ["@babel/preset-env"]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }));
+  });
+
   it("should use sensible default browsers per platform", () => {
     let config = buildConfig();
 
