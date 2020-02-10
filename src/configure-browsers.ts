@@ -110,6 +110,7 @@ function configureSauceLabs(config: ConfigOptions, options: NormalizedOptions): 
       base: "SauceLabs",
       platform: "Windows 10",
       browserName: "microsoftedge",
+      version: "18.17763",    // The last version of EdgeHTML, before the switch to Chromium
     });
   }
 

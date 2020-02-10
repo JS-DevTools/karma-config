@@ -182,7 +182,7 @@ module.exports = require("@jsdevtools/karma-config")({
 |`browsers.chrome` |`boolean`         |`true` for Linux<br>`false` on other platforms   |Whether to test on Chrome.
 |`browsers.firefox`|`boolean`         |`true` for Linux<br>`false` on other platforms   |Whether to test on Firefox.
 |`browsers.safari` |`boolean`         |`true` for Mac<br>`false` on other platforms     |Whether to test on Safari.<br>Can use [SauceLabs](#saucelabs) if configured.
-|`browsers.edge`   |`boolean`         |`true` for Windows<br>`false` on other platforms |Whether to test on Edge.<br>Can use [SauceLabs](#saucelabs) if configured.
+|`browsers.edge`   |`boolean`         |`true` for Windows<br>`false` on other platforms |Whether to test on Edge (the EdgeHTML engine, not Chromium).<br>Can use [SauceLabs](#saucelabs) if configured.
 |`browsers.ie`     |`boolean`         |`false`                                          |Whether to test on Internet Explorer.<br>Can use [SauceLabs](#saucelabs) if configured.
 |`sourceDir`       |`string`          |`src`                                            |The relative path of the source directory.
 |`testDir`         |`string`          |`test`                                           |The relative path of the test directory.

@@ -71,6 +71,7 @@ describe("Browser config", () => {
           base: "SauceLabs",
           platform: "Windows 10",
           browserName: "microsoftedge",
+          version: "18.17763"
         },
         IE_SauceLabs: {
           base: "SauceLabs",
@@ -221,6 +222,7 @@ describe("Browser config", () => {
           base: "SauceLabs",
           platform: "Windows 10",
           browserName: "microsoftedge",
+          version: "18.17763"
         },
       }
     }));
