@@ -23,7 +23,7 @@ describe("webpack config", () => {
     }));
   });
 
-  it("should not use babel by default on non-Windows platforms, even if IE is supported", () => {
+  it("should use babel if IE is supported, regardless of OS", () => {
     let config = buildConfig({
       platform: "MacOS",
       browsers: {
@@ -31,13 +31,25 @@ describe("webpack config", () => {
       }
     });
 
-    let expectedBrowsers = defaultBrowsers.slice();
-    if (process.platform === "win32") {
-      expectedBrowsers.push("IE");
-    }
-
     expect(config).to.deep.equal(mergeConfig({
-      browsers: ["Chrome", "Firefox", "Safari"],
+      browsers: ["Safari", "IE"],
+      webpack: {
+        mode: "development",
+        devtool: "inline-source-map",
+        module: {
+          rules: [
+            {
+              test: /\.(js|jsx|mjs)$/,
+              use: {
+                loader: "babel-loader",
+                options: {
+                  presets: ["@babel/preset-env"]
+                }
+              }
+            }
+          ]
+        }
+      }
     }));
   });
 
@@ -55,7 +67,7 @@ describe("webpack config", () => {
     }
 
     expect(config).to.deep.equal(mergeConfig({
-      browsers: ["Chrome", "Firefox", "Edge", "IE"],
+      browsers: ["Edge", "IE"],
       webpack: {
         mode: "development",
         devtool: "inline-source-map",

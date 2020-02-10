@@ -24,10 +24,10 @@ describe("Browser config", () => {
     let config = buildConfig();
 
     if (process.platform === "win32") {
-      expect(config.browsers).to.deep.equal(["Chrome", "Firefox", "Edge"]);
+      expect(config.browsers).to.deep.equal(["Edge"]);
     }
     else if (process.platform === "darwin") {
-      expect(config.browsers).to.deep.equal(["Chrome", "Firefox", "Safari"]);
+      expect(config.browsers).to.deep.equal(["Safari"]);
     }
     else {
       expect(config.browsers).to.deep.equal(["Chrome", "Firefox"]);
@@ -38,6 +38,7 @@ describe("Browser config", () => {
     let config = buildConfig({
       browsers: {
         chrome: false,
+        firefox: true,
         ie: true,
       }
     });
@@ -46,33 +47,20 @@ describe("Browser config", () => {
       expect(config.browsers).to.deep.equal(["Firefox", "Edge", "IE"]);
     }
     else if (process.platform === "darwin") {
-      expect(config.browsers).to.deep.equal(["Firefox", "Safari"]);
+      expect(config.browsers).to.deep.equal(["Firefox", "Safari", "IE"]);
     }
     else {
-      expect(config.browsers).to.deep.equal(["Firefox"]);
+      expect(config.browsers).to.deep.equal(["Firefox", "IE"]);
     }
   });
 
   it("should prefer headless browsers in CI", () => {
-    let config = buildConfig({ CI: true });
-
-    if (process.platform === "win32") {
-      expect(config.browsers).to.deep.equal(["ChromeHeadless", "FirefoxHeadless", "Edge"]);
-    }
-    else if (process.platform === "darwin") {
-      expect(config.browsers).to.deep.equal(["ChromeHeadless", "FirefoxHeadless", "Safari"]);
-    }
-    else {
-      expect(config.browsers).to.deep.equal(["ChromeHeadless", "FirefoxHeadless"]);
-    }
-  });
-
-  it("should prefer headless versions of supported browsers in CI", () => {
     let config = buildConfig({
       CI: true,
       browsers: {
+        chrome: true,
+        firefox: true,
         ie: true,
-        safari: false,
       }
     });
 
@@ -80,26 +68,59 @@ describe("Browser config", () => {
       expect(config.browsers).to.deep.equal(["ChromeHeadless", "FirefoxHeadless", "Edge", "IE"]);
     }
     else if (process.platform === "darwin") {
-      expect(config.browsers).to.deep.equal(["ChromeHeadless", "FirefoxHeadless"]);
+      expect(config.browsers).to.deep.equal(["ChromeHeadless", "FirefoxHeadless", "Safari", "IE"]);
     }
     else {
-      expect(config.browsers).to.deep.equal(["ChromeHeadless", "FirefoxHeadless"]);
+      expect(config.browsers).to.deep.equal(["ChromeHeadless", "FirefoxHeadless", "IE"]);
     }
   });
 
-  it("should prefer SauceLabs on Windows CI", () => {
+  it("should not use SauceLabs if credentials don't exist", () => {
+    let config = buildConfig({
+      platform: "linux",
+      browsers: {
+        safari: true,
+        edge: true,
+        ie: true,
+      }
+    });
+
+    expect(config.browsers).to.deep.equal(["Chrome", "Firefox", "Safari", "Edge", "IE"]);
+    expect(config).not.to.have.property("sauceLabs");
+    expect(config).not.to.have.property("customLaunchers");
+  });
+
+  it("should not use SauceLabs on Linux by default", () => {
     process.env.SAUCE_USERNAME = "my-username";
     process.env.SAUCE_ACCESS_KEY = "my-access-key";
     process.env.CI_BUILD_NUMBER = "1.23";
 
     let config = buildConfig({
-      CI: true,
-      platform: "windows"
+      platform: "linux",
+    });
+
+    expect(config).to.deep.equal(mergeConfig({
+      reporters: ["verbose"],
+      browsers: ["Chrome", "Firefox"],
+    }));
+  });
+
+  it("should prefer SauceLabs on Linux", () => {
+    process.env.SAUCE_USERNAME = "my-username";
+    process.env.SAUCE_ACCESS_KEY = "my-access-key";
+    process.env.CI_BUILD_NUMBER = "1.23";
+
+    let config = buildConfig({
+      platform: "linux",
+      browsers: {
+        safari: true,
+        edge: true,
+      }
     });
 
     expect(config).to.deep.equal(mergeConfig({
       reporters: ["verbose", "saucelabs"],
-      browsers: ["Chrome_SauceLabs", "Firefox_SauceLabs", "Edge_SauceLabs"],
+      browsers: ["Chrome", "Firefox", "Safari_SauceLabs", "Edge_SauceLabs"],
       logLevel: "debug",
       captureTimeout: 60000,
       browserDisconnectTolerance: 5,
@@ -112,15 +133,10 @@ describe("Browser config", () => {
       },
       customLaunchers: {
         /* eslint-disable camelcase */
-        Firefox_SauceLabs: {
+        Safari_SauceLabs: {
           base: "SauceLabs",
-          platform: "Windows 10",
-          browserName: "firefox",
-        },
-        Chrome_SauceLabs: {
-          base: "SauceLabs",
-          platform: "Windows 10",
-          browserName: "chrome",
+          platform: "MacOS 10.15",
+          browserName: "safari",
         },
         Edge_SauceLabs: {
           base: "SauceLabs",
@@ -131,23 +147,23 @@ describe("Browser config", () => {
     }));
   });
 
-  it("should use supported browsers in SauceLabs on Windows CI", () => {
+  it("should use headless browsers and SauceLabs on Linux CI", () => {
     process.env.SAUCE_USERNAME = "my-username";
     process.env.SAUCE_ACCESS_KEY = "my-access-key";
     process.env.CI_BUILD_NUMBER = "1.23";
 
     let config = buildConfig({
       CI: true,
-      platform: "windows",
+      platform: "linux",
       browsers: {
         ie: true,
-        firefox: false,
+        safari: true,
       }
     });
 
     expect(config).to.deep.equal(mergeConfig({
       reporters: ["verbose", "saucelabs"],
-      browsers: ["Chrome_SauceLabs", "Edge_SauceLabs", "IE_SauceLabs"],
+      browsers: ["ChromeHeadless", "FirefoxHeadless", "Safari_SauceLabs", "IE_SauceLabs"],
       logLevel: "debug",
       captureTimeout: 60000,
       browserDisconnectTolerance: 5,
@@ -160,15 +176,10 @@ describe("Browser config", () => {
       },
       customLaunchers: {
         /* eslint-disable camelcase */
-        Chrome_SauceLabs: {
+        Safari_SauceLabs: {
           base: "SauceLabs",
-          platform: "Windows 10",
-          browserName: "chrome",
-        },
-        Edge_SauceLabs: {
-          base: "SauceLabs",
-          platform: "Windows 10",
-          browserName: "microsoftedge",
+          platform: "MacOS 10.15",
+          browserName: "safari",
         },
         IE_SauceLabs: {
           base: "SauceLabs",
@@ -194,17 +205,6 @@ describe("Browser config", () => {
         }
       }
     }));
-  });
-
-  it("should not use SauceLabs on Windows CI if credentials don't exist", () => {
-    let config = buildConfig({
-      CI: true,
-      platform: "windows"
-    });
-
-    expect(config.browsers).to.deep.equal(["ChromeHeadless", "FirefoxHeadless", "Edge"]);
-    expect(config).not.to.have.property("sauceLabs");
-    expect(config).not.to.have.property("customLaunchers");
   });
 
 });

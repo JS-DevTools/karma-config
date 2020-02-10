@@ -4,7 +4,7 @@
  * @typedef {import("karma").ConfigOptions} ConfigOptions
  */
 
-let defaultBrowsers = ["Chrome", "Firefox"];
+let defaultBrowsers = [];
 
 switch (process.platform) {
   case "win32":
@@ -12,6 +12,9 @@ switch (process.platform) {
     break;
   case "darwin":
     defaultBrowsers.push("Safari");
+    break;
+  default:
+    defaultBrowsers.push("Chrome", "Firefox");
     break;
 }
 
