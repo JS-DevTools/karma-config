@@ -9,38 +9,37 @@ export interface Options {
    */
   browsers?: {
     /**
-     * Indicates whether Chrome is supported.  If `true`, then your tests will be run in Chrome on all platforms.
+     * Indicates whether to test on Chrome.
      *
-     * Defaults to `true`.
+     * Defaults to `true` on Linux and `false` on other platforms.
      */
     chrome?: boolean;
 
     /**
-     * Indicates whether Firefox is supported.  If `true`, then your tests will be run in Firefox on all platforms.
+     * Indicates whether to test on Firefox.
      *
-     * Defaults to `true`.
+     * Defaults to `true` on Linux and `false` on other platforms.
      */
     firefox?: boolean;
 
     /**
-     * Indicates whether Safari is supported.  If `true`, then your tests will be run in Safari when on a Mac.
+     * Indicates whether to test on Safari.
      *
-     * Defaults to `true`.
+     * Defaults to `true` on Mac and `false` on other platforms.
      */
     safari?: boolean;
 
     /**
-     * Indicates whether Edge is supported.  If `true`, then your tests will be run in Edge when on Windows.
+     * Indicates whether to test on Edge (the EdgeHTML engine, not Chromium).
      *
-     * Defaults to `true`.
+     * Defaults to `true` on Windows and `false` on other platforms.
      */
     edge?: boolean;
 
     /**
-     * Indicates whether Internet Explorer is supported.  If `true`, then your tests will be run
-     * in Internet Explorer when on Windows.
+     * Indicates whether to test on Internet Explorer.
      *
-     * Defaults to `false`.
+     * Defaults to `false` on all platforms.
      */
     ie?: boolean;
   };
