@@ -168,32 +168,55 @@ module.exports = require("@jsdevtools/karma-config")({
   testDir: "my/test/dir",                 // Override the default testDir ("test")
   coverage: true,                         // Always produce a code-coverage report
   browsers: {
-    firefox: false,                       // Don't test in Firefox on any OS
-    ie: true,                             // Test in Internet Explorer on Windows
+    firefox: false,                       // Never test in Firefox
+    ie: true,                             // Always test in Internet Explorer
   }
 });
 ```
 
 ### All Options
 
-|Option            |Type              |Default Value            |Description
-|:-----------------|:-----------------|:------------------------|:------------------------------------------------
-|`browsers`        |`object`          |                         |This object allows you to specify which browsers you support.
-|`browsers.chrome` |`boolean`         |`true`                   |Indicates whether Chrome is supported. If `true`, then tests will be run in Chrome on all OSes.
-|`browsers.firefox`|`boolean`         |`true`                   |Indicates whether Firefox is supported. If `true`, then tests will be run in Firefox on all OSes.
-|`browsers.safari` |`boolean`         |`true`                   |Indicates whether Safari is supported. If `true`, then tests will be run in Safari when on a Mac.
-|`browsers.edge`   |`boolean`         |`true`                   |Indicates whether Edge is supported. If `true`, then tests will be run in Edge when on Windows.
-|`browsers.ie`     |`boolean`         |`false`                  |Indicates whether Internet Explorer is supported. If `true`, then tests will be run in Internet Explorer when on Windows.
-|`sourceDir`       |`string`          |`src`                    |The relative path of the source directory.
-|`testDir`         |`string`          |`test`                   |The relative path of the test directory.
+|Option            |Type              |Default Value                                    |Description
+|:-----------------|:-----------------|:------------------------------------------------|:------------------------------------------------
+|`browsers`        |`object`          |                                                 |This object allows you to specify which browsers to test on
+|`browsers.chrome` |`boolean`         |`true` for Linux<br>`false` on other platforms   |Whether to test on Chrome.
+|`browsers.firefox`|`boolean`         |`true` for Linux<br>`false` on other platforms   |Whether to test on Firefox.
+|`browsers.safari` |`boolean`         |`true` for Mac<br>`false` on other platforms     |Whether to test on Safari.<br>Can use [SauceLabs](#saucelabs) if configured.
+|`browsers.edge`   |`boolean`         |`true` for Windows<br>`false` on other platforms |Whether to test on Edge.<br>Can use [SauceLabs](#saucelabs) if configured.
+|`browsers.ie`     |`boolean`         |`false`                                          |Whether to test on Internet Explorer.<br>Can use [SauceLabs](#saucelabs) if configured.
+|`sourceDir`       |`string`          |`src`                                            |The relative path of the source directory.
+|`testDir`         |`string`          |`test`                                           |The relative path of the test directory.
 |`tests`           |`string` `string[]` `object` `object[]`|`${testDir}/**/*.spec.js` `${testDir}/**/*.test.js` `${testDir}/**/*.spec.jsx` `${testDir}/**/*.test.jsx` `${testDir}/**/*.spec.mjs` `${testDir}/**/*.test.mjs`|One or more [file patterns](https://karma-runner.github.io/3.0/config/files.html) that specify your test files. These are the files that will be bundled by Webpack and run by Karma.
 |`fixtures`        |`string` `string[]` `object` `object[]`|none|One or more [file patterns](https://karma-runner.github.io/3.0/config/files.html) that specify your test fixtures. Test fixtures will be run _before_ any of your test files are loaded, which gives you an opportunity to setup the runtime environment, load polyfills, etc.
 |`serve`           |`string` `string[]` `object` `object[]`|`${testDir}/**/*`|One or more [file patterns](https://karma-runner.github.io/3.0/config/files.html) that Karma will allow to be served. This is useful for loading test data from CSV or JSON files.
-|`transpile`       |`boolean`         |`false`*                 |Indicates whether your source code should be transpiled to ES5 syntax to support older web browsers. If set to `true`, then Webpack will be configured to use Babel.<br><br>* If `browsers.ie` is enabled, then this option defaults to `true` when running on Windows. You can explicitly set it to `false` if desired.
-|`coverage`        |`boolean`         |`false`                  |Indicates whether code coverage analysis should be performed. If set to `true`, then Webpack will be configured to inject code-coverage instrumentation and write code-coverage reports in the `./coverage/` directory.<br><br>This option can also be enabled by setting the `KARMA_COVERAGE` environment variable, or by using the `--coverage` command-line flag when running Karma.
+|`transpile`       |`boolean`         |`false`*                                         |Indicates whether your source code should be transpiled to ES5 syntax to support older web browsers. If set to `true`, then Webpack will be configured to use Babel.<br><br>* If `browsers.ie` is enabled, then this option defaults to `true` when running on Windows. You can explicitly set it to `false` if desired.
+|`coverage`        |`boolean`         |`false`                                          |Indicates whether code coverage analysis should be performed. If set to `true`, then Webpack will be configured to inject code-coverage instrumentation and write code-coverage reports in the `./coverage/` directory.<br><br>This option can also be enabled by setting the `KARMA_COVERAGE` environment variable, or by using the `--coverage` command-line flag when running Karma.
 |`platform`        |`string`          |[`process.platform`](https://nodejs.org/api/process.html#process_process_platform) |The operating system platform (e.g. "linux", "win32", "darwin", etc.). This determines which browsers will be launched by Karma.
-|`CI`              |`boolean`         |auto-detected            |Indicates whether Karma is running in a CI environment. If set to `true`, then Karma will be configured to run headless browsers where possible.<br><br>Karma Config will auto-detect [most CI environments](https://www.npmjs.com/package/@qawolf/ci-info#supported-ci-tools). This option can also be enabled by setting the `CI` or `KARMA_CI` environment variables.
-|`config`          |`object`          |`{}`                     |Explicit Karma configuration settings. This is useful for adding additional settings that aren't normally set by Karma Config, or for overriding Karma Config's settings.
+|`CI`              |`boolean`         |auto-detected                                    |Indicates whether Karma is running in a CI environment. If set to `true`, then Karma will be configured to run headless browsers where possible.<br><br>Karma Config will auto-detect [most CI environments](https://www.npmjs.com/package/@qawolf/ci-info#supported-ci-tools). This option can also be enabled by setting the `CI` or `KARMA_CI` environment variables.
+|`config`          |`object`          |`{}`                                             |Explicit Karma configuration settings. This is useful for adding additional settings that aren't normally set by Karma Config, or for overriding Karma Config's settings.
+
+
+
+SauceLabs
+--------------------------
+Safari, Edge, and Internet Explorer aren't supported on some CI/CD services. Karma Config allows you to use [SauceLabs](https://saucelabs.com) to test on these browsers.
+
+Karma Config uses the [Sauce Connect proxy](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy) to open a secure channel to SauceLabs. Sauce Connect is **only supported on Linux** and requires the `SAUCE_USERNAME` and `SAUCE_ACCESS_KEY` environment variables to be set.
+
+```javascript
+module.exports = require("@jsdevtools/karma-config")({
+  browsers: {
+    // No need to explicitly set these, since they are tested by default on Linux
+    // firefox: true,
+    // chrome: true,
+
+    // Test these browsers using SauceLabs
+    ie: true,
+    edge: true,
+    safari: true,
+  }
+});
+```
 
 
 

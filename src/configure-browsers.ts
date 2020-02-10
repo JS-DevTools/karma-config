@@ -12,37 +12,40 @@ export function configureBrowsers(config: ConfigOptions, options: NormalizedOpti
     return config;
   }
 
-  let { windows, mac, CI, browsers: { chrome, firefox, safari, edge, ie }} = options;
+  let { CI, browsers: { chrome, firefox, safari, edge, ie }} = options;
   let browsers = config.browsers = [] as string[];
 
   if (CI) {
-    if (windows) {
-      // Windows browsers aren't available in many CI systems, so try using SauceLabs
-      config = configureSauceLabs(config, options);
-      browsers = config.browsers!;
-
-      if (browsers.length === 0) {
-        chrome && browsers.push("ChromeHeadless");
-        firefox && browsers.push("FirefoxHeadless");
-        edge && browsers.push("Edge");
-        ie && browsers.push("IE");
-      }
-    }
-    else {
-      chrome && browsers.push("ChromeHeadless");
-      firefox && browsers.push("FirefoxHeadless");
-      mac && safari && browsers.push("Safari");
-    }
+    chrome && browsers.push("ChromeHeadless");
+    firefox && browsers.push("FirefoxHeadless");
   }
   else {
     chrome && browsers.push("Chrome");
     firefox && browsers.push("Firefox");
-    mac && safari && browsers.push("Safari");
-    windows && edge && browsers.push("Edge");
-    windows && ie && browsers.push("IE");
+  }
+
+  if (canRunSauceConnect(options)) {
+    configureSauceLabs(config, options);
+  }
+  else {
+    safari && browsers.push("Safari");
+    edge && browsers.push("Edge");
+    ie && browsers.push("IE");
   }
 
   return config;
+}
+
+/**
+ * Determines whether the system meets the requirements for running the Sauce Connect proxy.
+ *
+ * @see https://github.com/karma-runner/karma-sauce-launcher
+ */
+function canRunSauceConnect(options: NormalizedOptions): boolean {
+  let username = process.env.SAUCE_USERNAME;
+  let accessKey = process.env.SAUCE_ACCESS_KEY;
+
+  return Boolean(options.linux && username && accessKey);
 }
 
 /**
@@ -52,12 +55,11 @@ export function configureBrowsers(config: ConfigOptions, options: NormalizedOpti
  * @see https://github.com/karma-runner/karma-sauce-launcher
  */
 function configureSauceLabs(config: ConfigOptions, options: NormalizedOptions): ConfigOptions {
-  let { browsers: { chrome, firefox, edge, ie }} = options;
+  let { browsers: { safari, edge, ie }} = options;
   let browsers = config.browsers!;
-  let username = process.env.SAUCE_USERNAME;
-  let accessKey = process.env.SAUCE_ACCESS_KEY;
 
-  if (!username || !accessKey) {
+  if (!(safari || edge || ie)) {
+    // No need to run tests on Sauce Labs
     return config;
   }
 
@@ -68,7 +70,9 @@ function configureSauceLabs(config: ConfigOptions, options: NormalizedOptions): 
     process.env.CI_BUILD_TAG ||
     process.env.TRAVIS_BUILD_NUMBER ||
     process.env.CIRCLE_BUILD_NUM ||
-    process.env.DRONE_BUILD_NUMBER;
+    process.env.DRONE_BUILD_NUMBER ||
+    process.env.GITHUB_RUN_NUMBER ||
+    Date.now();
 
   let pkg = readPackageJson();
 
@@ -91,21 +95,12 @@ function configureSauceLabs(config: ConfigOptions, options: NormalizedOptions): 
 
   config.customLaunchers = config.customLaunchers || {};
 
-  if (chrome) {
-    browsers.push("Chrome_SauceLabs");
-    config.customLaunchers.Chrome_SauceLabs = {
+  if (safari) {
+    browsers.push("Safari_SauceLabs");
+    config.customLaunchers.Safari_SauceLabs = {
       base: "SauceLabs",
-      platform: "Windows 10",
-      browserName: "chrome",
-    };
-  }
-
-  if (firefox) {
-    browsers.push("Firefox_SauceLabs");
-    config.customLaunchers.Firefox_SauceLabs = {
-      base: "SauceLabs",
-      platform: "Windows 10",
-      browserName: "firefox",
+      platform: "MacOS 10.15",  // Catalina
+      browserName: "safari",
     };
   }
 
