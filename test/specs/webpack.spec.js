@@ -3,11 +3,8 @@
 const { buildConfig } = require("../../");
 const { expect } = require("chai");
 const { defaultBrowsers, mergeConfig } = require("../utils/config");
-const envVars = require("../utils/env-vars");
 
 describe("webpack config", () => {
-  beforeEach(envVars.override);
-  afterEach(envVars.restore);
 
   it("should configure webpack by default", () => {
     let config = buildConfig();

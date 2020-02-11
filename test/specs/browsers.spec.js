@@ -3,12 +3,9 @@
 const { buildConfig } = require("../../");
 const { expect } = require("chai");
 const { mergeConfig } = require("../utils/config");
-const envVars = require("../utils/env-vars");
 const pkg = require("../../package.json");
 
 describe("Browser config", () => {
-  beforeEach(envVars.override);
-  afterEach(envVars.restore);
 
   it("should not override browsers that are specified by the user", () => {
     let config = buildConfig({

@@ -3,11 +3,8 @@
 const { buildConfig } = require("../../");
 const { expect } = require("chai");
 const { defaultConfig, mergeConfig } = require("../utils/config");
-const envVars = require("../utils/env-vars");
 
 describe("buildConfig()", () => {
-  beforeEach(envVars.override);
-  afterEach(envVars.restore);
 
   it("should return the default config if called with no options", () => {
     let config = buildConfig();

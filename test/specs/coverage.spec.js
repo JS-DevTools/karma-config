@@ -3,11 +3,8 @@
 const { buildConfig } = require("../../");
 const { expect } = require("chai");
 const { mergeConfig } = require("../utils/config");
-const envVars = require("../utils/env-vars");
 
 describe("Code-coverage config", () => {
-  beforeEach(envVars.override);
-  afterEach(envVars.restore);
 
   it("should not configure code coverage by default", () => {
     let config = buildConfig();
