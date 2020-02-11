@@ -1,4 +1,4 @@
-import * as ci from "@qawolf/ci-info";
+import { host } from "@jsdevtools/host-environment";
 import { ConfigOptions, FilePattern } from "karma";
 import { Options } from "./options";
 
@@ -94,7 +94,7 @@ function defaultCI(): boolean {
   let CI = environmentFlag("CI");
   let karmaCI = environmentFlag("KARMA_CI");
 
-  return CI || karmaCI || ci.isCI;
+  return Boolean(CI || karmaCI || host.ci);
 }
 
 /**
