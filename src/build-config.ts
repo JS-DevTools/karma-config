@@ -13,10 +13,10 @@ export function buildConfig(options?: Options): ConfigOptions {
   let opts = normalizeOptions(options);
 
   let config = mergeConfig(opts.config, {
+    plugins: [],
     frameworks: ["mocha", "host-environment"],
     reporters: ["verbose"],
     files: opts.fixtures.concat(opts.tests, opts.serve.map(serveFile)),
-    plugins: [],
   });
 
   addPlugin(config, "@jsdevtools/karma-host-environment");
