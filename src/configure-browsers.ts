@@ -1,7 +1,7 @@
 import { ConfigOptions } from "karma";
 import { NormalizedOptions } from "./normalize-options";
 import { readPackageJson } from "./package-json";
-import { mergeConfig } from "./util";
+import { addPlugin, mergeConfig } from "./util";
 
 /**
  * Configures the browsers for the current platform
@@ -14,6 +14,12 @@ export function configureBrowsers(config: ConfigOptions, options: NormalizedOpti
 
   let { CI, browsers: { chrome, firefox, safari, edge, ie }} = options;
   let browsers = config.browsers = [] as string[];
+
+  chrome && addPlugin(config, "karma-chrome-launcher");
+  firefox && addPlugin(config, "karma-firefox-launcher");
+  safari && addPlugin(config, "karma-safari-launcher");
+  edge && addPlugin(config, "karma-edge-launcher");
+  ie && addPlugin(config, "karma-ie-launcher");
 
   if (CI) {
     chrome && browsers.push("ChromeHeadless");
@@ -62,6 +68,8 @@ function configureSauceLabs(config: ConfigOptions, options: NormalizedOptions): 
     // No need to run tests on Sauce Labs
     return config;
   }
+
+  addPlugin(config, "karma-sauce-launcher");
 
   let buildNumber =
     process.env.BUILD_NUMBER ||

@@ -44,13 +44,14 @@
   "dependencies": {
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
+    "@jsdevtools/host-environment": "^2.0.1",
+    "@jsdevtools/karma-host-environment": "^3.0.0",
     "babel-loader": "^8.0.6",
     "coverage-istanbul-loader": "^2.0.3",
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage-istanbul-reporter": "^2.1.1",
     "karma-edge-launcher": "^0.4.2",
     "karma-firefox-launcher": "^1.2.0",
-    "karma-host-environment": "^2.0.3",
     "karma-ie-launcher": "^1.0.0",
     "karma-mocha": "^1.2.0",
     "karma-safari-launcher": "^1.0.0",
@@ -62,7 +63,6 @@
   },
   "devDependencies": {
     "@jsdevtools/eslint-config-modular": "^8.0.0",
-    "@jsdevtools/host-environment": "^2.0.1",
     "@jsdevtools/tslint-modular": "^2.0.1",
     "@jsdevtools/version-bump-prompt": "^6.0.0",
     "@types/karma": "^3.0.5",

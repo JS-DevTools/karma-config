@@ -1,6 +1,6 @@
 import { ConfigOptions } from "karma";
 import { NormalizedOptions } from "./normalize-options";
-import { hasWebpackLoader, mergeConfig } from "./util";
+import { addPlugin, hasWebpackLoader, mergeConfig } from "./util";
 
 /**
  * Configures Karma and Webpack to gather code-coverage data.
@@ -9,6 +9,8 @@ export function configureCoverage(config: ConfigOptions, { coverage, sourceDir }
   if (!coverage) {
     return config;
   }
+
+  addPlugin(config, "karma-coverage-istanbul-reporter");
 
   if (!config.reporters!.includes("coverage-istanbul")) {
     config.reporters!.push("coverage-istanbul");

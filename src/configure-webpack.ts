@@ -1,6 +1,6 @@
-import { ConfigOptions, FilePattern } from "karma";
+import { ConfigOptions } from "karma";
 import { NormalizedOptions } from "./normalize-options";
-import { hasWebpackLoader, mergeConfig } from "./util";
+import { addPlugin, hasWebpackLoader, mergeConfig } from "./util";
 
 /**
  * Configures Webpack to bundle test files and their dependencies.
@@ -8,6 +8,8 @@ import { hasWebpackLoader, mergeConfig } from "./util";
 export function configureWebpack(config: ConfigOptions, options: NormalizedOptions): ConfigOptions {
   let { transpile } = options;
   let globs = getEntryFileGlobs(options);
+
+  addPlugin(config, "karma-webpack");
 
   for (let glob of globs) {
     config.preprocessors = mergeConfig(config.preprocessors, {
