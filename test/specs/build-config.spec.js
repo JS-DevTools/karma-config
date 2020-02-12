@@ -2,25 +2,30 @@
 
 const { buildConfig } = require("../../");
 const { expect } = require("chai");
-const { defaultConfig, mergeConfig } = require("../utils/config");
+const { defaultConfig, defaultPlugins, compareConfig } = require("../utils/config");
 
 describe("buildConfig()", () => {
 
   it("should return the default config if called with no options", () => {
     let config = buildConfig();
-    expect(config).to.deep.equal(defaultConfig);
+    expect(config).to.satisfy(compareConfig(defaultConfig));
   });
 
   it("should not override user-specified config settings", () => {
     let config = buildConfig({
       config: {
+        plugins: ["my-plugin"],
         frameworks: ["my-framework"],
         reporters: ["my-reporter"],
         files: [],    // <--- empty array
       }
     });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
+      plugins: [
+        "my-plugin",
+        ...defaultPlugins,
+      ],
       frameworks: ["my-framework"],
       reporters: ["my-reporter"],
       files: [],
@@ -30,7 +35,7 @@ describe("buildConfig()", () => {
   it("should serve a single file", () => {
     let config = buildConfig({ serve: "path/to/my/file.json" });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
       files: [
         "test/**/*.+(spec|test).+(js|jsx|mjs)",
         { pattern: "path/to/my/file.json", included: false, served: true }
@@ -46,7 +51,7 @@ describe("buildConfig()", () => {
       ],
     });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
       files: [
         "test/**/*.+(spec|test).+(js|jsx|mjs)",
         { pattern: "path/to/some/**/*.files", included: false, served: true },
@@ -58,7 +63,7 @@ describe("buildConfig()", () => {
   it("should load test fixtures before tests", () => {
     let config = buildConfig({ fixtures: "path/to/my/test/fixtures.js" });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
       files: [
         "path/to/my/test/fixtures.js",
         "test/**/*.+(spec|test).+(js|jsx|mjs)",
@@ -80,7 +85,7 @@ describe("buildConfig()", () => {
       ]
     });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
       files: [
         "path/to/my/test/fixtures.js",
         { pattern: "more/test/fixtures.mjs" },

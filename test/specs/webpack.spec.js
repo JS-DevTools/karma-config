@@ -2,14 +2,14 @@
 
 const { buildConfig } = require("../../");
 const { expect } = require("chai");
-const { defaultBrowsers, mergeConfig } = require("../utils/config");
+const { defaultBrowsers, compareConfig } = require("../utils/config");
 
 describe("webpack config", () => {
 
   it("should configure webpack by default", () => {
     let config = buildConfig();
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
       webpack: {
         mode: "development",
         devtool: "inline-source-map",
@@ -28,7 +28,15 @@ describe("webpack config", () => {
       }
     });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
+      plugins: [
+        "framework:host-environment",
+        "framework:mocha",
+        "reporter:verbose",
+        "preprocessor:webpack",
+        "launcher:Safari",
+        "launcher:IE",
+      ],
       browsers: ["Safari", "IE"],
       webpack: {
         mode: "development",
@@ -63,7 +71,15 @@ describe("webpack config", () => {
       expectedBrowsers.push("IE");
     }
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
+      plugins: [
+        "framework:host-environment",
+        "framework:mocha",
+        "reporter:verbose",
+        "preprocessor:webpack",
+        "launcher:Edge",
+        "launcher:IE",
+      ],
       browsers: ["Edge", "IE"],
       webpack: {
         mode: "development",
@@ -88,7 +104,7 @@ describe("webpack config", () => {
   it("should configure webpack and babel if the transiple option is set", () => {
     let config = buildConfig({ transpile: true });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
       webpack: {
         mode: "development",
         devtool: "inline-source-map",
@@ -122,7 +138,7 @@ describe("webpack config", () => {
       }
     });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
       webpack: {
         mode: "production",
         devtool: "",
@@ -147,7 +163,7 @@ describe("webpack config", () => {
       }
     });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
       webpack: {
         mode: "development",
         devtool: "inline-source-map",
@@ -174,7 +190,7 @@ describe("webpack config", () => {
       }
     });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
       webpack: {
         mode: "development",
         devtool: "inline-source-map",

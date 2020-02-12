@@ -2,7 +2,7 @@
 
 const { buildConfig } = require("../../");
 const { expect } = require("chai");
-const { mergeConfig } = require("../utils/config");
+const { compareConfig } = require("../utils/config");
 const pkg = require("../../package.json");
 
 describe("Browser config", () => {
@@ -44,7 +44,19 @@ describe("Browser config", () => {
       }
     });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
+      plugins: [
+        "framework:host-environment",
+        "framework:mocha",
+        "reporter:verbose",
+        "preprocessor:webpack",
+        "launcher:Chrome",
+        "launcher:Firefox",
+        "launcher:Safari",
+        "launcher:Edge",
+        "launcher:IE",
+        "launcher:SauceLabs",
+      ],
       reporters: ["verbose", "saucelabs"],
       browsers: ["Chrome", "Firefox", "Safari_SauceLabs", "Edge_SauceLabs", "IE_SauceLabs"],
       logLevel: "debug",
@@ -176,7 +188,15 @@ describe("Browser config", () => {
       platform: "linux",
     });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
+      plugins: [
+        "framework:host-environment",
+        "framework:mocha",
+        "reporter:verbose",
+        "preprocessor:webpack",
+        "launcher:Chrome",
+        "launcher:Firefox",
+      ],
       reporters: ["verbose"],
       browsers: ["Chrome", "Firefox"],
     }));
@@ -195,7 +215,18 @@ describe("Browser config", () => {
       }
     });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
+      plugins: [
+        "framework:host-environment",
+        "framework:mocha",
+        "reporter:verbose",
+        "preprocessor:webpack",
+        "launcher:Chrome",
+        "launcher:Firefox",
+        "launcher:Safari",
+        "launcher:Edge",
+        "launcher:SauceLabs",
+      ],
       reporters: ["verbose", "saucelabs"],
       browsers: ["Chrome", "Firefox", "Safari_SauceLabs", "Edge_SauceLabs"],
       logLevel: "debug",
@@ -239,7 +270,18 @@ describe("Browser config", () => {
       }
     });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
+      plugins: [
+        "framework:host-environment",
+        "framework:mocha",
+        "reporter:verbose",
+        "preprocessor:webpack",
+        "launcher:Chrome",
+        "launcher:Firefox",
+        "launcher:Safari",
+        "launcher:IE",
+        "launcher:SauceLabs",
+      ],
       reporters: ["verbose", "saucelabs"],
       browsers: ["ChromeHeadless", "FirefoxHeadless", "Safari_SauceLabs", "IE_SauceLabs"],
       logLevel: "debug",

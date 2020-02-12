@@ -2,7 +2,7 @@
 
 const karmaConfig = require("../../");
 const { expect } = require("chai");
-const { mergeConfig } = require("../utils/config");
+const { compareConfig } = require("../utils/config");
 
 describe("karmaConfig()", () => {
 
@@ -10,7 +10,7 @@ describe("karmaConfig()", () => {
     let actual;
     expect(fn).to.be.a("function").with.property("name", "configureKarma");
     fn({ set (config) { actual = config; } });
-    expect(actual).to.deep.equal(mergeConfig(expected));
+    expect(actual).to.satisfy(compareConfig(expected));
   }
 
   it("should work without any arguments", () => {
@@ -46,6 +46,13 @@ describe("karmaConfig()", () => {
 
     expect(withOptions).not.to.throw();
     testConfigureKarma(fn, {
+      plugins: [
+        "framework:host-environment",
+        "framework:mocha",
+        "reporter:verbose",
+        "preprocessor:webpack",
+        "launcher:Safari",
+      ],
       browsers: ["Safari"]
     });
   });

@@ -2,7 +2,7 @@
 
 const { buildConfig } = require("../../");
 const { expect } = require("chai");
-const { mergeConfig } = require("../utils/config");
+const { defaultPlugins, compareConfig } = require("../utils/config");
 
 describe("Code-coverage config", () => {
 
@@ -16,7 +16,11 @@ describe("Code-coverage config", () => {
   it("should add code coverage config if specified", () => {
     let config = buildConfig({ coverage: true });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
+      plugins: [
+        ...defaultPlugins,
+        "reporter:coverage-istanbul",
+      ],
       reporters: [
         "verbose",
         "coverage-istanbul"
@@ -75,7 +79,11 @@ describe("Code-coverage config", () => {
       }
     });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
+      plugins: [
+        ...defaultPlugins,
+        "reporter:coverage-istanbul",
+      ],
       reporters: [
         "coverage-istanbul"
       ],
@@ -129,7 +137,11 @@ describe("Code-coverage config", () => {
       }
     });
 
-    expect(config).to.deep.equal(mergeConfig({
+    expect(config).to.satisfy(compareConfig({
+      plugins: [
+        ...defaultPlugins,
+        "reporter:coverage-istanbul",
+      ],
       reporters: ["verbose", "coverage-istanbul"],
       webpack: {
         mode: "development",
