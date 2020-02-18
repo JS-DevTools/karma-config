@@ -1,5 +1,5 @@
+import { ono } from "@jsdevtools/ono";
 import { readFileSync } from "fs";
-import ono from "ono";  // tslint:disable-line: match-default-export-name
 import { FullVersion } from "package-json";
 
 let pkg: FullVersion | undefined;
