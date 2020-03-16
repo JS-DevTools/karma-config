@@ -1,6 +1,6 @@
 {
   "name": "@jsdevtools/karma-config",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "description": "Karma configuration builder with sensible defaults to minimize boilerplate",
   "keywords": [
     "karma",
