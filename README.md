@@ -3,8 +3,8 @@ Karma Config
 
 ### Karma configuration builder with sensible defaults to minimize boilerplate
 
-[![Cross-Platform Compatibility](https://jstools.dev/img/badges/os-badges.svg)](https://github.com/JS-DevTools/karma-config/blob/master/.github/workflows/CI-CD.yaml)
-[![Build Status](https://github.com/JS-DevTools/karma-config/workflows/CI-CD/badge.svg)](https://github.com/JS-DevTools/karma-config/blob/master/.github/workflows/CI-CD.yaml)
+[![Cross-Platform Compatibility](https://jstools.dev/img/badges/os-badges.svg)](https://github.com/JS-DevTools/karma-config/actions)
+[![Build Status](https://github.com/JS-DevTools/karma-config/workflows/CI-CD/badge.svg)](https://github.com/JS-DevTools/karma-config/actions)
 
 [![Coverage Status](https://coveralls.io/repos/github/JS-DevTools/karma-config/badge.svg?branch=master)](https://coveralls.io/github/JS-DevTools/karma-config?branch=master)
 [![Dependencies](https://david-dm.org/JS-DevTools/karma-config.svg)](https://david-dm.org/JS-DevTools/karma-config)
@@ -223,7 +223,7 @@ module.exports = require("@jsdevtools/karma-config")({
 
 Contributing
 --------------------------
-Contributions, enhancements, and bug-fixes are welcome! [File an issue](https://github.com/JS-DevTools/karma-config/issues) on GitHub and [submit a pull request](https://github.com/JS-DevTools/karma-config/pulls).
+Contributions, enhancements, and bug-fixes are welcome! [Open an issue](https://github.com/JS-DevTools/karma-config/issues) on GitHub and [submit a pull request](https://github.com/JS-DevTools/karma-config/pulls).
 
 #### Building/Testing
 To build/test the project locally on your computer:
