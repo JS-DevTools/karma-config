@@ -1,4 +1,4 @@
-import { ConfigOptions } from "karma";
+import { ConfigOptions, InlinePluginDef } from "karma";
 import { RuleSetRule, RuleSetUseItem } from "webpack";
 
 // tslint:disable-next-line: no-any
@@ -26,7 +26,7 @@ export function mergeConfig<T extends POJO>(target: T | undefined, defaults: Par
  * Adds the specified Karma plugin to the config
  */
 export function addPlugin(config: ConfigOptions, plugin: string): ConfigOptions {
-  config.plugins!.push(require(plugin));
+  config.plugins!.push(require(plugin) as InlinePluginDef);
   return config;
 }
 
