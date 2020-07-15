@@ -35,7 +35,7 @@ describe("Code-coverage config", () => {
               include: /src/,
               exclude: /node_modules|\.spec\.|\.test\./,
               enforce: "post",
-              use: "coverage-istanbul-loader"
+              use: "@jsdevtools/coverage-istanbul-loader"
             }
           ],
         }
@@ -129,7 +129,7 @@ describe("Code-coverage config", () => {
               },
               {
                 test: /src\/*\.*/,
-                use: "coverage-istanbul-loader"
+                use: "@jsdevtools/coverage-istanbul-loader"
               }
             ],
           }
@@ -154,7 +154,7 @@ describe("Code-coverage config", () => {
             },
             {
               test: /src\/*\.*/,
-              use: "coverage-istanbul-loader"
+              use: "@jsdevtools/coverage-istanbul-loader"
             }
           ],
         }

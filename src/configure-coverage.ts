@@ -22,13 +22,14 @@ export function configureCoverage(config: ConfigOptions, { coverage, sourceDir }
     skipFilesWithNoCoverage: true,
   });
 
-  if (!hasWebpackLoader(config.webpack.module!.rules, "coverage-istanbul-loader")) {
+  if (!hasWebpackLoader(config.webpack.module!.rules, "coverage-istanbul-loader")
+  && !hasWebpackLoader(config.webpack.module!.rules, "@jsdevtools/coverage-istanbul-loader")) {
     config.webpack.module!.rules.push({
       test: /\.(js|jsx|mjs)$/,
       include: new RegExp(sourceDir.replace(/\//g, "\/")),
       exclude: /node_modules|\.spec\.|\.test\./,
       enforce: "post",
-      use: "coverage-istanbul-loader",
+      use: "@jsdevtools/coverage-istanbul-loader",
     });
   }
 
