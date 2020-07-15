@@ -30,9 +30,7 @@
   ],
   "scripts": {
     "clean": "shx rm -rf .nyc_output coverage lib",
-    "lint": "npm run lint:typescript && npm run lint:javascript",
-    "lint:typescript": "tslint -p tsconfig.json",
-    "lint:javascript": "eslint test",
+    "lint": "eslint src test",
     "build": "tsc",
     "watch": "tsc --watch",
     "test": "mocha && npm run lint",
@@ -45,6 +43,7 @@
     "@babel/core": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
     "@jsdevtools/coverage-istanbul-loader": "^3.0.4",
+    "@jsdevtools/eslint-config": "0.0.1",
     "@jsdevtools/host-environment": "^2.0.3",
     "@jsdevtools/karma-host-environment": "^3.0.2",
     "@jsdevtools/ono": "^7.1.2",
@@ -63,7 +62,6 @@
   },
   "devDependencies": {
     "@jsdevtools/eslint-config-modular": "^8.0.3",
-    "@jsdevtools/tslint-modular": "^2.0.5",
     "@jsdevtools/version-bump-prompt": "^6.0.3",
     "@types/karma": "^5.0.0",
     "@types/karma-webpack": "^2.0.7",
@@ -76,9 +74,7 @@
     "nyc": "^15.1.0",
     "package-json": "^6.5.0",
     "shx": "^0.3.2",
-    "tslint": "^6.1.2",
-    "typescript": "^3.9.6",
-    "typescript-tslint-plugin": "^0.5.5"
+    "typescript": "^3.9.6"
   },
   "peerDependencies": {
     "karma": ">=4",

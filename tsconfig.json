@@ -4,7 +4,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "lib": [
-      "esnext",
+      "esnext"
     ],
 
     "outDir": "lib",
@@ -19,11 +19,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "stripInternal": true,
-    "noFallthroughCasesInSwitch": true,
-
-    "plugins": [
-      { "name": "typescript-tslint-plugin" }
-    ]
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src/**/*.ts"
