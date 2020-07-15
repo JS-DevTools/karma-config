@@ -1,20 +1,17 @@
 import { ConfigOptions, InlinePluginDef } from "karma";
 import { RuleSetRule, RuleSetUseItem } from "webpack";
 
-// tslint:disable-next-line: no-any
 type POJO = Record<string, any>;
 
 /**
  * Does a shallow merge of two objects, only overriding values that are `undefined`.
  */
 export function mergeConfig<T extends POJO>(target: T | undefined, defaults: Partial<T>): T {
-  let config = target || {} as T;  // tslint:disable-line: no-object-literal-type-assertion
-
+  let config = target || {} as T;
   for (let key of Object.keys(defaults)) {
     let defaultValue = defaults[key];
 
     if (config[key] === undefined) {
-      // tslint:disable-next-line: no-any
       (config as any)[key] = defaultValue;
     }
   }
@@ -26,6 +23,7 @@ export function mergeConfig<T extends POJO>(target: T | undefined, defaults: Par
  * Adds the specified Karma plugin to the config
  */
 export function addPlugin(config: ConfigOptions, plugin: string): ConfigOptions {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
   config.plugins!.push(require(plugin) as InlinePluginDef);
   return config;
 }

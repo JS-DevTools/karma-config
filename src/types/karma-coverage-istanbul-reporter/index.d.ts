@@ -27,6 +27,6 @@ interface Thresholds {
 
 declare module "karma" {
   interface ConfigOptions {
-      coverageIstanbulReporter: CoverageConfig;
+    coverageIstanbulReporter: CoverageConfig;
   }
 }

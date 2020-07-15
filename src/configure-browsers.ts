@@ -12,6 +12,7 @@ export function configureBrowsers(config: ConfigOptions, options: NormalizedOpti
     return config;
   }
 
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   let { CI, browsers: { chrome, firefox, safari, edge, ie }} = options;
   let browsers = config.browsers = [] as string[];
 
@@ -105,6 +106,7 @@ function configureSauceLabs(config: ConfigOptions, options: NormalizedOptions): 
 
   if (safari) {
     browsers.push("Safari_SauceLabs");
+    // eslint-disable-next-line camelcase
     config.customLaunchers.Safari_SauceLabs = mergeConfig(config.customLaunchers.Safari_SauceLabs, {
       base: "SauceLabs",
       platform: "MacOS 10.15",  // Catalina
@@ -114,6 +116,7 @@ function configureSauceLabs(config: ConfigOptions, options: NormalizedOptions): 
 
   if (edge) {
     browsers.push("Edge_SauceLabs");
+    // eslint-disable-next-line camelcase
     config.customLaunchers.Edge_SauceLabs = mergeConfig(config.customLaunchers.Edge_SauceLabs, {
       base: "SauceLabs",
       platform: "Windows 10",
@@ -124,6 +127,7 @@ function configureSauceLabs(config: ConfigOptions, options: NormalizedOptions): 
 
   if (ie) {
     browsers.push("IE_SauceLabs");
+    // eslint-disable-next-line camelcase
     config.customLaunchers.IE_SauceLabs = mergeConfig(config.customLaunchers.IE_SauceLabs, {
       base: "SauceLabs",
       platform: "Windows 10",

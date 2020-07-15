@@ -11,7 +11,7 @@ export interface NormalizedOptions {
   linux: boolean;
   testDir: string;
   sourceDir: string;
-  CI: boolean;
+  CI: boolean;  // eslint-disable-line @typescript-eslint/naming-convention
   transpile: boolean;
   coverage: boolean;
   tests: Array<string | FilePattern>;
@@ -35,7 +35,7 @@ export function normalizeOptions(options?: Options): NormalizedOptions {
   options.browsers = options.browsers || {};
 
   let platform = normalizeOption(options.platform, process.platform, String).toLowerCase();
-  let windows = /^win/.test(platform);
+  let windows = platform.startsWith("win");
   let mac = /^darwin|^mac|^osx/.test(platform);
   let linux = !mac && !windows;
 
@@ -48,7 +48,7 @@ export function normalizeOptions(options?: Options): NormalizedOptions {
     linux,
     testDir,
     sourceDir: normalizeOption(options.sourceDir, "src", String),
-    CI: normalizeOption(options.CI, defaultCI(), Boolean),
+    CI: normalizeOption(options.CI, defaultCI(), Boolean), // eslint-disable-line @typescript-eslint/naming-convention
     transpile: normalizeOption(options.transpile, ie, Boolean),
     coverage: normalizeOption(options.coverage, defaultCoverage(), Boolean),
     tests: arrayify(options.tests) || [`${testDir}/**/*.+(spec|test).+(js|jsx|mjs)`],

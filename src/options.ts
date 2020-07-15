@@ -127,7 +127,7 @@ export interface Options {
    *
    * @see https://www.npmjs.com/package/@qawolf/ci-info#supported-ci-tools
    */
-  CI?: boolean;
+  CI?: boolean;  // eslint-disable-line @typescript-eslint/naming-convention
 
   /**
    * Explicit Karma configuration settings. This is useful for adding additional settings that
