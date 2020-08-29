@@ -117,17 +117,17 @@ You can explicitly specify any Karma settings, and Karma Config will honor them.
 ```javascript
 module.exports = require("@jsdevtools/karma-config")({
   config: {
-    port: 12345,                                // Set Karma's port number
-    browserNoActivityTimeout: 5000,             // Set Karma's inactivity timeout
-    browsers: ["Opera", "Safari"]               // Always use these browsers, regardless of OS
+    port: 12345,                                    // Set Karma's port number
+    browserNoActivityTimeout: 5000,                 // Set Karma's inactivity timeout
+    browsers: ["Opera", "Safari"]                   // Always use these browsers, regardless of OS
     webpack: {
       resolve: {
-          extensions: [".js", ".jsx", ".ts", ".tsx"] // Configure Webpack to resolve TypeScript file
+        extensions: [".js", ".jsx", ".ts", ".tsx"]  // Configure Webpack to resolve TypeScript file
       },
-      mode: "production",                       // Override the default Webpack mode
+      mode: "production",                           // Override the default Webpack mode
       module: {
         rules: [
-          { test: /\.ts$/, use: "ts-loader" }   // Configure Webpack to support TypeScript
+          { test: /\.ts$/, use: "ts-loader" }       // Configure Webpack to support TypeScript
         ]
       }
     }
@@ -257,6 +257,8 @@ Big Thanks To
 --------------------------
 Thanks to these awesome companies for their support of Open Source developers ❤
 
+[![GitHub](https://jstools.dev/img/badges/github.svg)](https://github.com/open-source)
+[![NPM](https://jstools.dev/img/badges/npm.svg)](https://www.npmjs.com/)
+[![Coveralls](https://jstools.dev/img/badges/coveralls.svg)](https://coveralls.io)
 [![Travis CI](https://jstools.dev/img/badges/travis-ci.svg)](https://travis-ci.com)
 [![SauceLabs](https://jstools.dev/img/badges/sauce-labs.svg)](https://saucelabs.com)
-[![Coveralls](https://jstools.dev/img/badges/coveralls.svg)](https://coveralls.io)
