@@ -121,6 +121,9 @@ module.exports = require("@jsdevtools/karma-config")({
     browserNoActivityTimeout: 5000,             // Set Karma's inactivity timeout
     browsers: ["Opera", "Safari"]               // Always use these browsers, regardless of OS
     webpack: {
+      resolve: {
+          extensions: [".js", ".jsx", ".ts", ".tsx"] // Configure Webpack to resolve TypeScript file
+      },
       mode: "production",                       // Override the default Webpack mode
       module: {
         rules: [
