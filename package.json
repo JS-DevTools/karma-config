@@ -54,7 +54,7 @@
     "karma-ie-launcher": "^1.0.0",
     "karma-mocha": "^2.0.1",
     "karma-safari-launcher": "^1.0.0",
-    "karma-sauce-launcher": "^4.3.6",
+    "karma-sauce-launcher": "^4.1.4",
     "karma-verbose-reporter": "^0.0.8",
     "karma-webpack": "^4.0.2",
     "webpack": "^4.43.0"
@@ -69,7 +69,7 @@
     "chai": "^4.3.6",
     "eslint": "^7.4.0",
     "mocha": "^10.0.0",
-    "npm-check": "^5.9.2",
+    "npm-check": "^4.1.4",
     "nyc": "^15.1.0",
     "package-json": "^7.0.0",
     "shx": "^0.3.2",
