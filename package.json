@@ -37,7 +37,7 @@
     "coverage": "nyc node_modules/mocha/bin/mocha",
     "upgrade": "npm-check -u && npm audit fix",
     "bump": "bump --tag --push --all",
-    "release": "npm run upgrade && npm run clean && npm run build && npm test && npm run bump"
+    "release": "npm run clean && npm run build && npm test && npm run bump"
   },
   "dependencies": {
     "@babel/core": "^7.17.10",
