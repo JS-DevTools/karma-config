@@ -185,9 +185,9 @@ module.exports = require("@jsdevtools/karma-config")({
 |`browsers`        |`object`          |                                                 |This object allows you to specify which browsers to test on
 |`browsers.chrome` |`boolean`         |`true` for Linux<br>`false` on other platforms   |Whether to test on Chrome.
 |`browsers.firefox`|`boolean`         |`true` for Linux<br>`false` on other platforms   |Whether to test on Firefox.
-|`browsers.safari` |`boolean`         |`true` for Mac<br>`false` on other platforms     |Whether to test on Safari.<br>Can use [SauceLabs](#saucelabs) if configured.
-|`browsers.edge`   |`boolean`         |`true` for Windows<br>`false` on other platforms |Whether to test on Edge (the EdgeHTML engine, not Chromium).<br>Can use [SauceLabs](#saucelabs) if configured.
-|`browsers.ie`     |`boolean`         |`false`                                          |Whether to test on Internet Explorer.<br>Can use [SauceLabs](#saucelabs) if configured.
+|`browsers.safari` |`boolean`         |`true` for Mac<br>`false` on other platforms     |Whether to test on Safari.
+|`browsers.edge`   |`boolean`         |`true` for Windows<br>`false` on other platforms |Whether to test on Edge (the EdgeHTML engine, not Chromium).
+|`browsers.ie`     |`boolean`         |`false`                                          |Whether to test on Internet Explorer.
 |`sourceDir`       |`string`          |`src`                                            |The relative path of the source directory.
 |`testDir`         |`string`          |`test`                                           |The relative path of the test directory.
 |`tests`           |`string` `string[]` `object` `object[]`|`${testDir}/**/*.spec.js` `${testDir}/**/*.test.js` `${testDir}/**/*.spec.jsx` `${testDir}/**/*.test.jsx` `${testDir}/**/*.spec.mjs` `${testDir}/**/*.test.mjs`|One or more [file patterns](https://karma-runner.github.io/3.0/config/files.html) that specify your test files. These are the files that will be bundled by Webpack and run by Karma.
@@ -198,30 +198,6 @@ module.exports = require("@jsdevtools/karma-config")({
 |`platform`        |`string`          |[`process.platform`](https://nodejs.org/api/process.html#process_process_platform) |The operating system platform (e.g. "linux", "win32", "darwin", etc.). This determines which browsers will be launched by Karma.
 |`CI`              |`boolean`         |auto-detected                                    |Indicates whether Karma is running in a CI environment. If set to `true`, then Karma will be configured to run headless browsers where possible.<br><br>Karma Config will auto-detect [most CI environments](https://www.npmjs.com/package/@qawolf/ci-info#supported-ci-tools). This option can also be enabled by setting the `CI` or `KARMA_CI` environment variables.
 |`config`          |`object`          |`{}`                                             |Explicit Karma configuration settings. This is useful for adding additional settings that aren't normally set by Karma Config, or for overriding Karma Config's settings.
-
-
-
-SauceLabs
---------------------------
-Safari, Edge, and Internet Explorer aren't supported on some CI/CD services. Karma Config allows you to use [SauceLabs](https://saucelabs.com) to test on these browsers.
-
-Karma Config uses the [Sauce Connect proxy](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy) to open a secure channel to SauceLabs. Sauce Connect is **only supported on Linux** and requires the `SAUCE_USERNAME` and `SAUCE_ACCESS_KEY` environment variables to be set.
-
-```javascript
-module.exports = require("@jsdevtools/karma-config")({
-  browsers: {
-    // No need to explicitly set these, since they are tested by default on Linux
-    // firefox: true,
-    // chrome: true,
-
-    // Test these browsers using SauceLabs
-    ie: true,
-    edge: true,
-    safari: true,
-  }
-});
-```
-
 
 
 Contributing
@@ -260,5 +236,3 @@ Thanks to these awesome companies for their support of Open Source developers ‚ù
 [![GitHub](https://jstools.dev/img/badges/github.svg)](https://github.com/open-source)
 [![NPM](https://jstools.dev/img/badges/npm.svg)](https://www.npmjs.com/)
 [![Coveralls](https://jstools.dev/img/badges/coveralls.svg)](https://coveralls.io)
-[![Travis CI](https://jstools.dev/img/badges/travis-ci.svg)](https://travis-ci.com)
-[![SauceLabs](https://jstools.dev/img/badges/sauce-labs.svg)](https://saucelabs.com)
